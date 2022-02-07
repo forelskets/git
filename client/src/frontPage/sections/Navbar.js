@@ -49,7 +49,7 @@ const Navbar = () => {
      }
      else if(data.RoleId === 2){
       // dispatch({type:"USER", payload:true})
-    window.location.href="http://localhost:3001/cdashboard";
+      history.push('/nav')
      }
    }
  }

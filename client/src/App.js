@@ -26,6 +26,8 @@ import UMain from './userDashboard/components/layout/UMain';
 import { createContext , useReducer , useContext} from 'react';
 import { reducer} from './reducer/UseReducer';
 import { initialState } from './reducer/UseReducer';
+import UserNavBar from './user/UserNavbar';
+import MidSec from './user/MidSec';
 
 export const userContext = createContext();
 
@@ -80,6 +82,9 @@ function App() {
         <Route exact path="/sign-in" exact component={SignIn} />
         <Route path="/" exact component={FrontMain} />
         <Route exact path="/applyloan" component={ApplyLoan} />
+        <Route path="/nav" component={UserNavBar} />
+        <Route path="/sec"  component={MidSec}/>
+
         
         {/* <Routing /> */}
         

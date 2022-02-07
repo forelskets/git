@@ -12,6 +12,7 @@
     "apexcharts": "^3.27.1",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.1.3",
+    "caniuse-lite": "^1.0.30001307",
     "install": "^0.13.0",
     "react": "^17.0.2",
     "react-apexcharts": "^1.3.9",
