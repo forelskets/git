@@ -17,7 +17,7 @@ const OtpComponent = () => {
      window.alert(data);
    }
    else if(data && response.status === 200){
-     history.push("/udashboard");
+     history.push("/nav");
    }
 
  }

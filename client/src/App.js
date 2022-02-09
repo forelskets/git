@@ -15,6 +15,7 @@ import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import FrontMain from "./frontPage/frontMain";
+import Call from "./frontPage/sections/Call";
 import './frontPage/css/frontPage.css';
 
 import BankOffers from "./pages/BankOffers";
@@ -84,6 +85,7 @@ function App() {
         <Route exact path="/applyloan" component={ApplyLoan} />
         <Route path="/nav" component={UserNavBar} />
         <Route path="/sec"  component={MidSec}/>
+        <Route path="/call"  component={Call}/>
 
         
         {/* <Routing /> */}

@@ -61,7 +61,7 @@ router.get('/addBank',auth, (req,res)=>{
 
 
 router.post('/userRegister',async (req, res)=>{
-   console.log(req.body.Name)
+   console.log(req.body.Name,"tata")
      try { let data1 = await User.collection.count();
        const {  Name ,Email , Password , Mobile } = req.body;
 
@@ -71,13 +71,18 @@ router.post('/userRegister',async (req, res)=>{
        }
        else {
        const isMatch = await User.findOne({Email})
-      //  console.log(isMatch);
+       console.log(isMatch,"isMatch")
        if(isMatch) {
+
           res.status(400).json("user is already exist.")
        }
        else{
       const user =  new User({RoleId: 2, UserId: data1 , Name , Email , Password , Mobile , Status:true });
+     
       const addUser = await user.save();
+      console.log(addUser,"dekho lo user")
+      const token = await addUser.generateAuthToken();
+      res.cookie('jwtoken', token);
       // console.log(addUser);
       const otpFunc= async ()=>{
          const otpCode = Math.floor((Math.random()*10000 + 1));
@@ -107,15 +112,15 @@ router.post('/userRegister',async (req, res)=>{
           secure: false,
           requireTLS: true,
           auth: {
-            user: "du19sh92yant@gmail.com",
-            pass: "du19rg92esh@gmail.com",
+            user: "mr.sachinpathak95@gmail.com",
+            pass: "SacPass@112233",
           },
         });
       
       
         let info = await transporter.sendMail({
-          from: '"Fred Foo 👻" <du19sh92yant@gmail.com>', 
-          to: `${Email}, baz@example.com`, 
+          from: '"Fred Foo 👻" <mr.sachinpathak95@gmail.com>', 
+          to: `${Email}, du19sh92yant@gmail.com`, 
           subject: `Hello ${Name}✔`, 
           html: `<b>${otpCode}</b>`, 
         });

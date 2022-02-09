@@ -45,6 +45,15 @@
   }
 }
 @media (max-width: 600px) {
+  .header {
+    padding: 10px !important;
+  }
+
+  .header .container .text-area .heading {
+   
+    font-size: 40px !important;
+    
+}
   .another-timeline .container .row .the-box {
     height: 213px !important;
     justify-content: space-between;
@@ -79,6 +88,7 @@
 
 .navbar {
   height: 98px;
+  box-shadow:-8px -7px 17px 0px  rgb(104, 99, 99);
 }
 .navbar-brand img {
   vertical-align: middle;
@@ -135,8 +145,8 @@
   background-color: #f6f7fc;
   width: 100vw;
   height: fit-content;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 .header .col-md-6 {
   vertical-align: middle;
@@ -208,7 +218,7 @@
 }
 
 .features-section {
-  background-color: #fec93c;
+  background-color: #edf7ff;
   padding-top: 50px;
   padding-bottom: 50px;
   align-items: center;
@@ -281,12 +291,7 @@
   padding-bottom: 100px;
   text-align: center;
 }
-.featured-in .container h1 {
-  margin: 30px auto;
-  text-transform: capitalize;
-  font-size: 40px;
-  font-weight: 600;
-}
+
 .featured-in .container .row .the-box {
   height: 150px;
   position: relative;
@@ -361,18 +366,11 @@
   position: relative;
 }
 .another-timeline {
-  padding-top: 30px;
+  padding-top: 20px;
   padding-bottom: 50px;
-  background-color: #fec93c;
+  background-color: #edf7ff;
 }
-.another-timeline .container h1 {
-  margin: 20px auto;
-  text-transform: capitalize;
-  font-size: 40px;
-  font-weight: 600;
-  text-align: center;
-  padding: 50px;
-}
+
 .another-timeline .container .row {
   justify-content: space-between;
 }
@@ -545,13 +543,14 @@
 .partner-section {
   padding-top: 50px;
   padding-bottom: 50px;
+  background-color: #edf7ff;
 }
 ::selection {
   background: rgb(0, 0, 0, 0.3);
 }
 .accordian-section .wrapper {
   max-width: 100%;
-  padding: 50px 20px;
+  padding: 50px 20px; 
 }
 .accordian-section .wrapper .parent-tab,
 .accordian-section .wrapper .child-tab {
@@ -714,127 +713,24 @@
   margin-top: 10px;
 }
 
-/* cards area ####################################################### */
 
-/*
-
-.cards-area .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin: 4rem 5vw;
-  padding: 0;
-  list-style-type: none;
-}
-
-.cards-area .card {
-  position: relative;
-  display: block;
-  height: 250px;
-  border-radius: calc(var(--curve) * 1px);
-  overflow: hidden;
-  text-decoration: none;
-}
-
-.cards-area .card__image {
-  width: 100%;
-  height: auto;
-}
-
-.cards-area .card__overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  border-radius: calc(var(--curve) * 1px);
-  background-color: var(--surface-color);
-  transform: translateY(100%);
-  transition: 0.2s ease-in-out;
-}
-
-.cards-area .card:hover .card__overlay {
-  transform: translateY(0);
-}
-
-.cards-area .card__header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 2em;
-  padding: 2em;
-  border-radius: calc(var(--curve) * 1px) 0 0 0;
-  background-color: var(--surface-color);
-  transform: translateY(-100%);
-  transition: 0.2s ease-in-out;
-}
-
-.cards-area .card__arc {
-  width: 80px;
-  height: 80px;
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  z-index: 1;
-}
-
-.cards-area .card__arc path {
-  fill: var(--surface-color);
-  d: path('M 40 80 c 22 0 40 -22 40 -40 v 40 Z');
-}
-
-.cards-area .card:hover .card__header {
-  transform: translateY(0);
-}
-
-.cards-area .card__thumb {
-  flex-shrink: 0;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.cards-area .card__title {
-  font-size: 20px;
-  margin: 0 0 0.3em;
-  color: #6a515e;
-}
-
-.cards-area .card__tagline {
-  display: block;
-  margin: 1em 0;
-  font-family: 'MockFlowFont';
-  font-size: 10px;
-  color: #d7bdca;
-}
-
-.cards-area .card__status {
-  font-size: 10px;
-  color: #d7bdca;
-}
-
-.cards-area .card__description {
-  padding: 0 2em 2em;
-  font-size: 15px;
-  margin: 0;
-  color: #d7bdca;
-  font-family: 'MockFlowFont';
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-*/
 .wrapper {
-  padding-top: 50px;
-  padding-bottom: 100px;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  background-color: #ffffff;
   text-align: center;
 }
-.wrapperr .container h1 {
-  margin: 30px auto;
+.wrapper ,
+.featured-in,
+.another-timeline,
+.container h1 {
+  margin: 20px auto;
   text-transform: capitalize;
   font-size: 40px;
   font-weight: 600;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 20px;
 }
 
 .cards-area {
@@ -855,4 +751,8 @@
 
 .copyright {
   background-color: #063846;
+}
+.copyright a{
+  color: white ;
+  font-weight: 100;
 }

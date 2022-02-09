@@ -12,9 +12,9 @@ const Section7 = () => {
       </section>
       <section className="accordian-section">
         
-        <section className="container" >
+        <div className="container" >
       <div className="wrapper ">
-            <h1>Faq's</h1>
+            <h1 className="heading pb-5">Faq's</h1>
             
             <div className="parent-tab">
               <input type="radio" name="tab" id="tab-1" checked/>
@@ -78,7 +78,7 @@ const Section7 = () => {
               </div>
             </div>
           </div>
-          </section>
+          </div>
           </section>  
       
    

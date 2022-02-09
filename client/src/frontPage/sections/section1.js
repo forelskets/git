@@ -23,7 +23,7 @@ const section1 = () => {
               <button className="button btn-4"><img src="images/get-on-playstore.png" alt="" className="img-fluid"/></button>
             </div>
           </div>
-          <div className="col-md-5 col-12 img-area">
+          <div className="col-md-5 col-12 img-area d-md-block d-none ">
             <img
               src="images/MOBILEPNG.png"
               alt=""
