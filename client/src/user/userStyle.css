@@ -1,5 +1,5 @@
 /* Googlefont Poppins CDN Link */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700;800;900&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -206,12 +206,16 @@ nav .profile-details i {
   justify-content: space-between;
   /* padding: 0 20px; */
 }
+.home-content .sales-boxes .form-padding {
+  padding: 10px 30px;
+}
 
 /* left box */
 .home-content .sales-boxes .recent-sales {
   /*width: 65%;*/
   background: #fff;
-  padding: 10px 30px;
+
+  padding: 0;
   margin: 0 0px;
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -221,11 +225,25 @@ nav .profile-details i {
   align-items: center;
   justify-content: space-between;
 }
+.row-title {
+  background: #ffc233;
+  text-align: center;
+  color: #155263;
+  font-size: 22px;
+  font-weight: 700;
+  text-shadow: 1px 1px white;
+  text-transform: uppercase;
+  border-radius: 10px 10px 0px 0px;
+}
 .sales-boxes .box .title {
-  font-size: 24px;
-  text-align: left;
-  margin-left: 27px;
-  font-weight: 500;
+  background: #ffc233;
+  text-align: center;
+  color: #155263;
+  font-size: 18px;
+  font-weight: 700;
+  text-shadow: 1px 1px white;
+  text-transform: uppercase;
+  border-radius: 10px 10px 0px 0px;
   /* margin-bottom: 10px; */
 }
 .sales-boxes .sales-details li.topic {
@@ -266,7 +284,7 @@ nav .profile-details i {
   /*width: 35%;*/
   background: #fff;
   position: relative;
-  padding: 10px 10px;
+  padding: 0px 0px;
   margin: 0 0px 0 20px;
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -384,9 +402,6 @@ nav .profile-details i {
 }
 @media (max-width: 700px) {
   nav .profile-details .admin_name,
-  nav .profile-details i {
-    display: none;
-  }
   .home-section nav .profile-details {
     height: 50px;
     min-width: 40px;
@@ -418,4 +433,41 @@ nav .profile-details i {
 }
 .copyright {
   background-color: #063846;
+}
+
+/* form css */
+
+nav.recent-sales-box-nav {
+  display: contents;
+}
+.nav-pills .nav-link.active {
+  color: #fff;
+  background-color: #155263 !important;
+  box-shadow: 0px 1px 9px 3px rgba(0, 0, 0, 0.31) !important;
+}
+
+.form-btn {
+  background-color: #155263 !important;
+  color: white !important;
+}
+
+.recent-sales form .form-control {
+  border-radius: 0px !important;
+  font-size: 14px;
+  border: none !important;
+  border-bottom: 1px solid #155263 !important;
+  align-items: baseline !important;
+}
+.recent-sales .form-3 .col-md-6 {
+  align-self: flex-end;
+}
+
+.recent-nav-tab {
+  font-size: 16px;
+}
+.recent-sales form label {
+  font-size: 14px;
+}
+.recent-sales .form-3 .file-input {
+  font-size: 10px;
 }

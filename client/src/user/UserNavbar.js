@@ -1,12 +1,12 @@
-import React from 'react'
-import { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
-import './userStyle.css'
+
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+
 
      
 
 const UserNavbar = () => {
-  const history = useHistory()
+  const history = useHistory();
   const [profile , setProfile] = useState({});
   const profileFunc = async ()=>{
     const response = await fetch('/profile',{
@@ -27,7 +27,7 @@ const UserNavbar = () => {
   profileFunc();
  })
 
- const logOutFunc = async (req, res)=>{
+ const LogOutFunc = async (req, res)=>{
   const response = await fetch('/userLogout',{
     method: "GET",
     headers:{
@@ -41,20 +41,21 @@ const UserNavbar = () => {
   }
   
 }
-
-
   return (
-  <div>
-      <div className="home-section">
-      <nav>
-      <div class="logo-container">
+  <>
+      
+       <nav>
+        <div>
+          <div class="logo-container">
             <img
             src="images/credit-n-logo.svg"
            
             className="d-inline-block align-top"
             alt=""
           />
+          
           </div>
+        </div>
         <div class="search-box">
           <input type="text" placeholder="Search..." />
           <i class="bx bx-search"></i>
@@ -64,36 +65,21 @@ const UserNavbar = () => {
             <img src="images/profile.jpg" alt="" />
 
             <span class="admin_name" style={{textTransform:'capitalize'}}>{profile.Name}</span>
-            <button
-              class="btn"
-              type="button"
-              id="dropdownMenuButton1"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="bx bx-chevron-down"></i>
-            </button>
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li class="dropdown-item" href="#">
                 <i class="fas fa-sign-in-alt"></i> <span>action</span>
               </li>
-              <li class="dropdown-item" href="#" onClick={logOutFunc}> <i class="fas fa-sign-in-alt"></i> <span>Logout</span></li>
-              <li class="dropdown-item" href="#">
-                <i class="fas fa-sign-in-alt"></i> <span>ID</span>
-              </li>
-              <li class="dropdown-item" href="#">
-                <i class="fas fa-sign-in-alt"></i> <span> Reg </span>
-              </li>
-              <li class="dropdown-item" href="#">
-                <i class="fas fa-sign-in-alt"></i> <span>action</span>
-              </li>
+              <li class="dropdown-item" href="#" onClick={LogOutFunc}>Logout</li>
+              <li class="dropdown-item" href="#">Logout</li>
+              <li class="dropdown-item" href="#">Logout</li>
+              <li class="dropdown-item" href="#">Logout</li>
             </div>
           </div>
         </div>
       </nav>
       
-      </div>
-  </div>);
+  </>);
 };
 
 export default UserNavbar;

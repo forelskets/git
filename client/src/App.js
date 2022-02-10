@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Billing from "./pages/Billing";
 import Rtl from "./pages/Rtl";
 import Profile from "./pages/Profile";
-import UProfile from './userDashboard/pages/UProfile';
+
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
@@ -20,42 +20,17 @@ import './frontPage/css/frontPage.css';
 
 import BankOffers from "./pages/BankOffers";
 import Banks from "./pages/Banks";
-import UHome from './userDashboard/pages/UHome';
-import ULoan from './userDashboard/pages/ULoan';
-import ApplyLoan from './userDashboard/pages/ApplyLoan';
-import UMain from './userDashboard/components/layout/UMain';
+
+
 import { createContext , useReducer , useContext} from 'react';
 import { reducer} from './reducer/UseReducer';
 import { initialState } from './reducer/UseReducer';
-import UserNavBar from './user/UserNavbar';
-import MidSec from './user/MidSec';
+import UserMain from './user/UserMain';
+
 
 export const userContext = createContext();
 
 
-// export const Routing =()=>{
-//   const {state , dispatch} =useContext(userContext);
-//   if(state == true){
-//     return(
-//     <UMain>
-//     <Route exact path="/udashboard" component={UHome} />
-//      </UMain>
-//     )
-//   }else if(state == false){
-//     return(
-//       <Main>
-//       <Route exact path="/dashboard" component={Home} />
-//       <Route exact path="/tables" component={Tables} />
-//       <Route exact path="/billing" component={Billing} />
-//       <Route exact path="/bankOffers" component={BankOffers} />
-//       <Route exact path="/rtl" component={Rtl} />
-//       <Route exact path="/profile" component={Profile} />
-      
-//     </Main>
-//     )
-
-//   }
-// }
 
 
 
@@ -82,9 +57,9 @@ function App() {
       <Route exact path="/sign-up" exact component={SignUp} />
         <Route exact path="/sign-in" exact component={SignIn} />
         <Route path="/" exact component={FrontMain} />
-        <Route exact path="/applyloan" component={ApplyLoan} />
-        <Route path="/nav" component={UserNavBar} />
-        <Route path="/sec"  component={MidSec}/>
+        
+        <Route path="/nav" component={UserMain} />
+        
         <Route path="/call"  component={Call}/>
 
         
@@ -93,8 +68,8 @@ function App() {
         
       
        <Main>
-       <Route exact path="/udashboard" component={UHome} />
-       <Route exact path="/uloan" component={ULoan} />
+      
+       
        
        
       <Route exact path="/dashboard" component={Home} />
@@ -103,7 +78,7 @@ function App() {
       <Route exact path="/bankOffers" component={BankOffers} />
       <Route exact path="/rtl" component={Rtl} />
       <Route exact path="/profile" component={Profile} />
-      <Route exact path="/uprofile" component={UProfile} />
+      
       
     </Main>      
       </Switch>

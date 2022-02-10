@@ -45,7 +45,7 @@ const Navbar = () => {
      
      if(data.RoleId === 1){
       // dispatch({type:"USER", payload:false})
-       history.push('/dashboard')
+       history.push('/nav')
      }
      else if(data.RoleId === 2){
       // dispatch({type:"USER", payload:true})
