@@ -1,12 +1,10 @@
-
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from 'react'
+import { useEffect, useState } from "react";
 
 
      
 
 const UserNavbar = () => {
-  const history = useHistory();
   const [profile , setProfile] = useState({});
   const profileFunc = async ()=>{
     const response = await fetch('/profile',{
@@ -26,21 +24,6 @@ const UserNavbar = () => {
  useEffect(()=>{ 
   profileFunc();
  })
-
- const LogOutFunc = async (req, res)=>{
-  const response = await fetch('/userLogout',{
-    method: "GET",
-    headers:{
-      Accept: "applicaton/json",
-      "Content-Type":"application/json"
-    },
-    credential: "include"
-  })
-  if(response.status === 200){
-    history.push('/');
-  }
-  
-}
   return (
   <>
       
@@ -70,7 +53,7 @@ const UserNavbar = () => {
               <li class="dropdown-item" href="#">
                 <i class="fas fa-sign-in-alt"></i> <span>action</span>
               </li>
-              <li class="dropdown-item" href="#" onClick={LogOutFunc}>Logout</li>
+              <li class="dropdown-item" href="#">Logout</li>
               <li class="dropdown-item" href="#">Logout</li>
               <li class="dropdown-item" href="#">Logout</li>
               <li class="dropdown-item" href="#">Logout</li>
