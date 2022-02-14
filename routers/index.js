@@ -7,6 +7,7 @@ const Bank = require('../models/bank');
 const auth = require('../middleware/Authentication')
 
 
+
 router.post('/login', async (req, res)=>{
    const {email , password} = req.body;
    if(!email || !password){
@@ -61,7 +62,7 @@ router.get('/addBank',auth, (req,res)=>{
 
 
 router.post('/userRegister',async (req, res)=>{
-   console.log(req.body.Name,"tata")
+  
      try { let data1 = await User.collection.count();
        const {  Name ,Email , Password , Mobile } = req.body;
 
@@ -71,18 +72,13 @@ router.post('/userRegister',async (req, res)=>{
        }
        else {
        const isMatch = await User.findOne({Email})
-       console.log(isMatch,"isMatch")
+      //  console.log(isMatch);
        if(isMatch) {
-
           res.status(400).json("user is already exist.")
        }
        else{
       const user =  new User({RoleId: 2, UserId: data1 , Name , Email , Password , Mobile , Status:true });
-     
       const addUser = await user.save();
-      console.log(addUser,"dekho lo user")
-      const token = await addUser.generateAuthToken();
-      res.cookie('jwtoken', token);
       // console.log(addUser);
       const otpFunc= async ()=>{
          const otpCode = Math.floor((Math.random()*10000 + 1));
@@ -112,15 +108,15 @@ router.post('/userRegister',async (req, res)=>{
           secure: false,
           requireTLS: true,
           auth: {
-            user: "mr.sachinpathak95@gmail.com",
-            pass: "SacPass@112233",
+            user: "du19sh92yant@gmail.com",
+            pass: "du19rg92esh@gmail.com",
           },
         });
       
       
         let info = await transporter.sendMail({
-          from: '"Fred Foo 👻" <mr.sachinpathak95@gmail.com>', 
-          to: `${Email}, du19sh92yant@gmail.com`, 
+          from: '"Fred Foo 👻" <du19sh92yant@gmail.com>', 
+          to: `${Email}, baz@example.com`, 
           subject: `Hello ${Name}✔`, 
           html: `<b>${otpCode}</b>`, 
         });
@@ -143,19 +139,18 @@ router.post('/userRegister',async (req, res)=>{
 })
 
 
-router.post('/userLogin', async(req, res)=>{
+router.post('/userLogin',   async(req, res)=>{
    console.log(req.body.email , req.body.password);
    const {email , password} = req.body;
    if(password && email){
    const isExist = await User.findOne({Email:email})
-   // console.log("a",isExist);
+   console.log("a",isExist);
    if(isExist){
      const isMatch = await bcrypt.compare(password, isExist.Password)
-   //   console.log("b",isMatch);
+     console.log("b",isMatch);
       if(isMatch){
          const token = await isExist.generateAuthToken();
          res.cookie('jwtoken', token);
-         
          res.status(200).json(isExist);
       }
       else{
@@ -168,6 +163,7 @@ router.post('/userLogin', async(req, res)=>{
    res.status(400).json("please fill data")
 }
 })
+
 
  router.post('/matchOtp',async (req,res)=>{
     console.log(req.body.otp);
@@ -187,27 +183,27 @@ router.post('/userLogin', async(req, res)=>{
  })
 
 
-router.get('/dashboard', auth , (req,res)=>{
+router.get('/dashboard' ,async (req,res)=>{
     res.status(200).send(req.rootUser);
 })
 
-router.get('/udashboard', auth , (req,res)=>{
+
+router.get('/profile',auth, async (req,res)=>{
    res.status(200).send(req.rootUser);
-})
-router.get('/profile', auth , (req,res)=>{
-   res.status(200).send(req.rootUser);
-})
-router.get('/initialState',  (req,res)=>{
-   const data = req.cookies.initialState;
-   if(!data){
-      res.status(200).send(false)}
-   else if(data == true){
-      res.status(200).send(true)
-   }
 })
 
-router.get('/userLogout',  (req,res)=>{
+router.get('/userMain', auth, async (req,res)=>{
+   res.status(200).send(req.rootUser);
+})
+
+
+
+router.get('/userLogout', auth, (req,res)=>{
    res.clearCookie('jwtoken', {path:'/'})
    res.status(200).send("user Logout");
 })
+
+
+
+
 module.exports = router;
