@@ -1,10 +1,13 @@
+import { FileProtectOutlined } from '@ant-design/icons';
 import React from 'react'
 import { useEffect, useState } from "react";
+import {useHistory} from 'react-router-dom'
 
 
      
 
 const UserNavbar = () => {
+  const history = useHistory();
   const [profile , setProfile] = useState({});
   const profileFunc = async ()=>{
     const response = await fetch('/profile',{
@@ -19,11 +22,23 @@ const UserNavbar = () => {
     setProfile(data);
     
   }
-
+ const logOutFunc=(async()=>{
+   const response = await fetch('/userLogout',{
+     method:"GET",
+     headers:{
+       Accept:"application/json",
+       "Content-Type":"application/json"
+     },
+     credentials:'include'
+   })
+   if(response.status === 200){
+     history.push('/')
+   }
+ })
 
  useEffect(()=>{ 
   profileFunc();
- })
+ },[])
   return (
   <>
       
@@ -53,7 +68,7 @@ const UserNavbar = () => {
               <li class="dropdown-item" href="#">
                 <i class="fas fa-sign-in-alt"></i> <span>action</span>
               </li>
-              <li class="dropdown-item" href="#">Logout</li>
+              <li class="dropdown-item" href="#" onClick={logOutFunc}>Logout</li>
               <li class="dropdown-item" href="#">Logout</li>
               <li class="dropdown-item" href="#">Logout</li>
               <li class="dropdown-item" href="#">Logout</li>

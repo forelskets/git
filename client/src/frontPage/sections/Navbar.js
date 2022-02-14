@@ -1,11 +1,11 @@
-import React,{useState , useEffect , useRef , useContext} from 'react';
+import React,{useState , useEffect , useRef } from 'react';
 import {NavLink, useHistory} from 'react-router-dom'
 import ModalComponent from './modalComponent';
 import OtpComponent from './otpComponent';
-import { userContext } from '../../App'; 
+
 
 const Navbar = () => {
-  const {state , dispatch} =useContext(userContext);
+
   const history = useHistory();
   const [email , setEmail] = useState("");
   const [password , setPassword] = useState("");

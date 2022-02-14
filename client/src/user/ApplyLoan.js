@@ -1,13 +1,40 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink ,useHistory} from 'react-router-dom';
 import LoanForm from './LoanForm';
 
 const ApplyLoan = () => {
+    const [profile , setProfile] = useState({});
     const [lstatus,setLstatus] = useState(false);
     const LoanFunc =()=>{
-        setLstatus(true);
+        setLstatus(!lstatus);
     }
 
+    const history = useHistory()
+    const callUserMainPage = async(req,res)=>{
+      try{
+          const res = await fetch('/userMain', {
+                method:"GET",
+                headers:{
+                    Accept:"application/json",
+                    "Content-Type":"application/json"
+                },
+                credentials:"include" 
+          });
+  
+          const data = await res.json()
+          console.log(res)
+          if(res.status === 401){
+            history.push("/")
+          }
+         setProfile(data)
+         }catch(err){
+          console.log(err);
+         
+      }  
+  }
+  
+  
+    callUserMainPage();
     
   return (
   <div>
@@ -60,7 +87,7 @@ const ApplyLoan = () => {
                   <li>
                     <NavLink to="#">
                       <img src="images/sunglasses.jpg" alt="" />
-                      <span className="profile-name">subham singh</span>
+                      <span className="profile-name">{profile.Name}</span>
                     </NavLink>
                   </li>
                   <br /><br />
@@ -71,8 +98,10 @@ const ApplyLoan = () => {
                     <input
                       type="text"
                       className="input-area"
-                      value="sunny jadaun"
+                      value={profile.Name}
+                      disabled
                     />
+                   
                   </li>
                   <li>
                     <span className="left-text">mobile no.</span>
@@ -80,53 +109,32 @@ const ApplyLoan = () => {
                     <input
                       type="text"
                       className="input-area"
-                      value="sunny jadaun"
+                      value={profile.Mobile}
+                      disabled
                     />
                   </li>
                   <li>
-                    <span className="left-text">cr. score</span>
+                    <span className="left-text">EMAIL ID</span>
 
                     <input
                       type="text"
                       className="input-area"
-                      value="sunny jadaun"
+                      value={profile.Email}
+                      disabled
                     />
                   </li>
-                  <li>
-                    <span className="left-text">address</span>
+                
+                 
 
-                    <input
-                      type="text"
-                      className="input-area"
-                      value="sunny jadaun"
-                    />
-                  </li>
-                  <li>
-                    <span className="left-text">baga</span>
-
-                    <input
-                      type="text"
-                      className="input-area"
-                      value="sunny jadaun"
-                    />
-                  </li>
-
-                  <li>
-                    <span className="left-text">Addidas </span>
-
-                    <input
-                      type="text"
-                      className="input-area"
-                      value="sunny jadaun"
-                    />
-                  </li>
+                  
                   <li>
                     <span className="left-text">password </span>
 
                     <input
                       type="password"
                       className="input-area"
-                      value="sunny jadaun"
+                      value={profile.password}
+                      disabled
                     />
                   </li>
                 </ul>
