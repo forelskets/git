@@ -2,6 +2,7 @@ const express = require("express");
 const EmploymentDetails = require("../models/employmentDetails");
 const Profile = require("../models/profile");
 const KYC = require("../models/kycDetails");
+const Application = require("../models/application");
 const multer = require("multer");
 const path = require("path");
 
@@ -11,112 +12,7 @@ ApplyLoanrouter.use(
   express.static(path.join(__dirname, "/uploads"))
 );
 
-ApplyLoanrouter.post("/employmentDetails", async (req, res) => {
-  console.log("hlo");
-  console.log("body", req.body);
-  try {
-    const {
-      FirstName,
-      LastName,
-      FatherName,
-      DOB,
-      Email,
-      Mobile,
-      CurrentAddress,
-      CurrentAddress2,
-      State,
-      City,
-      ZIP,
-      CompanyName,
-      Designation,
-      CurrentCompanyExperience,
-      TotalExperience,
-      MonthlyIncome,
-      AnnualIncome,
-    } = req.body;
 
-    console.log(
-      FirstName,
-      LastName,
-      FatherName,
-      DOB,
-      Email,
-      Mobile,
-      CurrentAddress,
-      CurrentAddress2,
-      State,
-      City,
-      ZIP,
-      CompanyName,
-      Designation,
-      CurrentCompanyExperience,
-      TotalExperience,
-      MonthlyIncome,
-      AnnualIncome
-    );
-    if (
-      FirstName &&
-      LastName &&
-      FatherName &&
-      DOB &&
-      Email &&
-      Mobile &&
-      CurrentAddress &&
-      CurrentAddress2 &&
-      State &&
-      City &&
-      ZIP &&
-      CompanyName &&
-      Designation &&
-      CurrentCompanyExperience &&
-      TotalExperience &&
-      MonthlyIncome &&
-      AnnualIncome
-    ) {
-      const profile = new Profile({
-        FirstName,
-        LastName,
-        FatherName,
-        Email,
-        Mobile,
-        DOB,
-        CurrentAddress,
-        CurrentAddress2,
-        State,
-        City,
-        ZIP,
-      });
-      const profileSave = await profile.save();
-      const Details = new EmploymentDetails({
-        CompanyName,
-        Designation,
-        CurrentCompanyExperience,
-        TotalExperience,
-        MonthlyIncome,
-        AnnualIncome,
-      });
-      const DetailsSave = await Details.save();
-      console.log(profileSave);
-      if (profileSave && DetailsSave) {
-        console.log("1");
-
-        return res.json("data is saved");
-      } else {
-        console.log("2");
-        res.status(400).json("Data is not saved");
-      }
-    } else {
-      console.log("3");
-      return res.send({
-        status: 0,
-        message: "please fill all the field carefully",
-      });
-    }
-  } catch (error) {
-    console.log("error", error);
-    return res.status(400).json("Data is not saved");
-  }
-});
 
 const storage = multer.diskStorage({
   destination: "uploads/",
@@ -166,8 +62,65 @@ ApplyLoanrouter.post(
     });
     console.log("req.body", req.body);
     console.log("fileArray", fileArray);
-
-    let obj1 = {
+    
+   if(  !req.body.FirstName ||
+     !req.body.LastName ||
+     !req.body.FatherName ||
+     !req.body.DOB ||
+     !req.body.Email ||
+     !req.body.Mobile ||
+     !req.body.CurrentAddress ||
+     !req.body.CurrentAddress ||
+     !req.body.State ||
+     !req.body.City ||
+     !req.body.ZIP ||
+     !req.body.CompanyName ||
+     !req.body.Designation ||
+     !req.body.CurrentCompanyExperience ||
+     !req.body.TotalExperience ||
+     !req.body.MonthlyIncome ||
+     !req.body.AnnualIncome ||
+     !req.body.AdhaarNo ||
+     !fileArray[0] ||
+     !req.body.PanNo ||
+     !fileArray[1] ||
+     !req.body.BankName ||
+     !req.body.AccountNo ||
+     !req.body.IFSCcode ||
+     !fileArray[2] ||
+     !fileArray[3] ||
+     !req.body.LoanAmount,
+     !req.body.loanPurpose,
+     !req.body.loanAmount,
+     !req.body.profession
+     ){
+       res.status(401).json("server is not getting complete data please fill carefully")
+     }
+     else{
+    console.log("else",req.body.loanPurpose,req.body.loanAmount ,req.body.profession)
+    const profile = new Profile({
+      FirstName: req.body.FirstName,
+      LastName:  req.body.LastName,
+      FatherName :  req.body.FatherName,
+      DOB:  req.body.DOB,
+      Email:  req.body.Email,
+      Mobile:  req.body.Mobile,
+      CurrentAddress:  req.body.CurrentAddress,
+      CurrentAddress2:  req.body.CurrentAddress,
+      State:  req.body.State,
+      City:  req.body.City,
+      ZIP:  req.body.ZIP,
+    });
+    const details = new EmploymentDetails({
+      CompanyName:  req.body.CompanyName,
+      Designation:  req.body.Designation,
+      CurrentCompanyExperience:  req.body.CurrentCompanyExperience,
+      TotalExperience:  req.body.TotalExperience,
+      MonthlyIncome:  req.body.MonthlyIncome,
+      AnnualIncome:  req.body.AnnualIncome,
+    });
+    
+    const kyc = new KYC({
       AdhaarNo: req.body.AdhaarNo,
       Adhaar: JSON.stringify(fileArray[0]),
       PanNo: req.body.PanNo,
@@ -178,11 +131,35 @@ ApplyLoanrouter.post(
       Photo: JSON.stringify(fileArray[2]),
       BankStmt: JSON.stringify(fileArray[3]),
       ActiveLoanAmount: req.body.LoanAmount,
-    };
-    const kyc = new KYC(obj1);
-    console.log("obj1", obj1);
-    await kyc.save();
-    res.status(200).json("save");
+    });
+    let count = await Application.collection.count();
+    const counter = `AP${count}CRED`;
+    const applicaiton = new Application({
+      Purpose:req.body.loanPurpose,
+      Amount:req.body.loanAmount,
+      Profession:req.body.profession,
+      ApplicationNo: counter
+    })
+
+
+    try{
+    const profileSave = await profile.save();
+    const detailsSave = await details.save();
+    const kycSave = await kyc.save();
+    const applicationSave = await applicaiton.save();
+    console.log( profileSave , detailsSave , kycSave)
+    if(profileSave && detailsSave && kycSave && applicationSave){
+      
+      res.send({status : 200 , message:`Your Application Submitted successfully and You application no. is ${counter}`})
+    }else{
+      res.send({status : 401 , message:"any technical problems please try again"})
+     
+    }
+  }catch(err){
+    console.log(err)
+  }
+   }
+    
   }
 );
 

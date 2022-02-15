@@ -4,6 +4,8 @@ import Select from "react-select";
 import axios from "axios";
 
 const LoanForm = () => {
+  const [message , setMessage] = useState('')
+  const modelRef = useRef(null)
   const [pan, setPan] = useState("");
   const [adhaar, setAdhaar] = useState("");
   const [bankStmt, setBankStmt] = useState("");
@@ -40,6 +42,7 @@ const LoanForm = () => {
   const [stateSelect, setStateSelect] = useState({});
   const OptionHandler = (tat) => {
     setStateSelect(tat);
+    
   };
 
   const options1 = [
@@ -50,8 +53,42 @@ const LoanForm = () => {
   const [citySelect, setCitySelect] = useState({});
   const OptionHandler1 = (tat) => {
     setCitySelect(tat);
+    
   };
 
+  const LoanPurpose = [
+    { value: "Education Loan", label: "Education" },
+    { value: "Personal Loan", label: "Personal" },
+   
+  ];
+  const [loanPurpose, setLoanPurpose] = useState('');
+  const LoanPurposeHandler = (tat) => {
+    setLoanPurpose(tat.value);
+    
+  };
+  const LoanAmount = [
+    { value: "1 Lakh", label: "1Lakh" },
+    { value: "2 Lakh", label: "2Lakh" },
+   
+  ];
+
+  const [loanAmount, setLoanAmount] = useState('');
+  const LoanAmountHandler = (tat) => {
+    setLoanAmount(tat.value);
+  };
+
+ 
+
+  const Profession = [
+    { value: "Salried", label: "Salried" },
+    { value: "BussinessMan", label: "BussinessMan" },
+   
+  ];
+  const [profession, setProfession] = useState('');
+  const ProfessionHandler = (tat) => {
+    setProfession(tat.value);
+  };
+ 
   const EmployeeDatails = useRef(null);
   const BasicDetails = useRef(null);
   const KYCDetails = useRef(null);
@@ -61,30 +98,7 @@ const LoanForm = () => {
   };
 
   const SubmitDetails = async () => {
-    //  const FirstName = employeeProfile.fname;
-    // const LastName = employeeProfile.lname;
-    // const FatherName = employeeProfile.fathername;
-    // const Email = employeeProfile.email;
-    // const DOB = employeeProfile.dob;
-    // const Mobile = employeeProfile.mobile;
-    // const CurrentAddress = employeeProfile.address;
-    // const CurrentAddress2 = employeeProfile.address2;
-    // const State = stateSelect.value;
-    // const City = citySelect.value;
-    // const ZIP = employeeProfile.zip;
-    // const CompanyName = employeeProfile.companyName;
-    // const Designation = employeeProfile.designation;
-    // const CurrentCompanyExperience = employeeProfile.currentCompanyExperience;
-    // const TotalExperience = employeeProfile.totalExperience;
-    // const MonthlyIncome = employeeProfile.monthlyIncome;
-    // const AnnualIncome = employeeProfile.annualIncome;
-    // const AdhaarNo = employeeProfile.adhaarNo;
-    // const PanNo = employeeProfile.panNo;
-    // const BankName = employeeProfile.bankName;
-    // const AccountNo = employeeProfile.accountNo;
-    // const IFSCcode = employeeProfile.IFSCcode;
-    // const LoanAmount = employeeProfile.loanAmount;
-    // const EMI = employeeProfile.emi;
+  
 
     let employeeProfileForm = {
       FirstName: employeeProfile.fname,
@@ -112,65 +126,54 @@ const LoanForm = () => {
       IFSCcode: employeeProfile.IFSCcode,
       LoanAmount: employeeProfile.loanAmount,
       EMI: employeeProfile.emi,
+      adhaar:adhaar,
+      pan:pan,
+      bankStmt:bankStmt,
+      photo:photo,
+      loanPurpose:loanPurpose,
+      loanAmount:loanAmount,
+      profession:profession
     };
-
-    // if (
-    //   (false && !FirstName) ||
-    //   !LastName ||
-    //   !FatherName ||
-    //   !Email ||
-    //   !Mobile ||
-    //   !DOB ||
-    //   !CurrentAddress ||
-    //   !CurrentAddress2 ||
-    //   !State ||
-    //   !City ||
-    //   !ZIP ||
-    //   !CompanyName ||
-    //   !Designation ||
-    //   !CurrentCompanyExperience ||
-    //   !TotalExperience ||
-    //   !MonthlyIncome ||
-    //   !AnnualIncome ||
-    //   !AdhaarNo ||
-    //   !adhaar ||
-    //   !PanNo ||
-    //   !pan ||
-    //   !photo ||
-    //   !bankStmt ||
-    //   !BankName ||
-    //   !AccountNo ||
-    //   !IFSCcode ||
-    //   !LoanAmount ||
-    //   !EMI
-    // ) {
-    //   window.alert("please fill all the field carefully");
-    // } else {
+    
+    if(
+    !employeeProfile.fname ||
+    !employeeProfile.lname ||
+    !employeeProfile.fathername ||
+    !employeeProfile.email ||
+    !employeeProfile.dob ||
+    !employeeProfile.mobile ||
+    !employeeProfile.address ||
+    !employeeProfile.address2 ||
+    !employeeProfile.zip ||
+    !employeeProfile.companyName ||
+    !employeeProfile.designation ||
+    !employeeProfile.currentCompanyExperience ||
+    !employeeProfile.totalExperience ||
+    !employeeProfile.monthlyIncome ||
+    !employeeProfile.annualIncome ||
+    !employeeProfile.adhaarNo ||
+    !employeeProfile.panNo ||
+    !employeeProfile.bankName ||
+    !employeeProfile.accountNo ||
+    !employeeProfile.IFSCcode ||
+    !employeeProfile.loanAmount ||
+    !employeeProfile.emi || 
+    !adhaar ||
+    !pan ||
+    !bankStmt ||
+    !photo ||
+    !loanPurpose ||
+    !loanAmount ||
+    !profession 
+    
+    )
+   
+     {
+      window.alert("please fill all the field carefully");
+    } else {
     console.log("aaaresponse", employeeProfileForm);
 
-    const response = await axios.post(
-      "http://localhost:5000/employmentDetails",
-      employeeProfileForm
-    );
-    console.log("aaaa response", response);
-
-    //   console.log( AdhaarNo , PanNo , BankName ,AccountNo, IFSCcode ,LoanAmount ,EMI  )
-    // const response = await fetch('https://localhost:5000/kycDetail/employmentDetails',{
-    //     method: "POST",
-    //     headers:{
-    //       'Content-Type':"application/json"
-    //     },
-    //     body: JSON.stringify({FirstName, LastName, FatherName, Email, Mobile, DOB,CurrentAddress, CurrentAddress2 , State, City , ZIP , CompanyName , Designation, CurrentCompanyExperience ,TotalExperience , MonthlyIncome ,AnnualIncome , AdhaarNo , PanNo , BankName ,AccountNo, IFSCcode ,LoanAmount ,EMI  })
-
-    //});
-    // console.log("response",response);
-    // const data = await response.json();
-    // // axios
-
-    employeeProfileForm.adhaar = adhaar;
-    employeeProfileForm.pan = pan;
-    employeeProfileForm.bankStmt = bankStmt;
-    employeeProfileForm.photo = photo;
+    
     console.log("aaa    employeeProfileForm", employeeProfileForm);
 
     const formData = new FormData();
@@ -180,22 +183,9 @@ const LoanForm = () => {
       formData.append([key], element);
       console.log([key])
     }
-    console.log("formData", formData);
-    // formData.append();
-    // formData.append();
-    // formData.append("adhaarNo", AdhaarNo);
-    // formData.append("adhaar", adhaar);
-    // formData.append("panNo", PanNo);
-    // formData.append("pan", pan);
-    // formData.append("bankName", BankName);
-    // formData.append("accountNo", AccountNo);
-    // formData.append("IFSCcode", IFSCcode);
-    // formData.append("photo", photo);
-    // formData.append("bankStmt", bankStmt);
-    // formData.append("loanAmount", LoanAmount);
-    // formData.append("emi", EMI);
-
-    // console.log("aaaaresponse", response);
+    
+    
+   
 
     try {
       console.log("xios");
@@ -203,7 +193,45 @@ const LoanForm = () => {
         "http://localhost:5000/kycDetails",
         formData
       );
-      console.log(upload, "upload");
+      console.log(upload.data.status, upload.data.status === 401, "upload");
+      setEmployeeProfile({
+        ...employeeProfile,
+        fname: "",
+        lname: "",
+        fathername: "",
+        email: "",
+        dob: "",
+        mobile: "",
+        address: "",
+        address2: "",
+        zip: "",
+        companyName: "",
+        designation: "",
+        currentCompanyExperience: "",
+        totalExperience: "",
+        monthlyIncome: "",
+        annualIncome: "",
+        adhaarNo: "",
+        panNo: "",
+        bankName: "",
+        accountNo: "",
+        IFSCcode: "",
+        loanAmount: "",
+        emi: "",
+      });
+      setPan("")
+      setAdhaar("")
+      setBankStmt("")
+      setPhoto("")
+      setLoanPurpose('')
+      setLoanAmount('')
+      setProfession('')
+      if(upload.data.status === 401 ){
+           window.alert(upload.data.message)
+      }else if(upload.data.status === 200 ){
+        modelRef.current.click();
+        setMessage(upload.data.message)
+      }
     } catch (err) {
       console.log("err", err);
       // throw err;
@@ -214,7 +242,7 @@ const LoanForm = () => {
     //   window.alert(data);
     // }
     // }
-  };
+  };}
   const ClickEmployeeDetails = () => {
     EmployeeDatails.current.click();
   };
@@ -281,22 +309,45 @@ const LoanForm = () => {
     <>
       <div className="form-padding">
         <div className="row my-3">
-          <div className="col-md-3">
-            <div className="form-group">
-              <select id="inputState" className="form-control">
-                <option selected>Purpose Of Loan</option>
-                <option>Education Loan</option>
-              </select>
-            </div>
+          
+          <div className="form-group col-md-4">
+            <Select
+                          placeholder="Purpose Of Loan"
+                          id="loanPurpose"
+                          name="loanPurpose"
+                          options={LoanPurpose}
+                          onChange={LoanPurposeHandler}
+                          className="form-control"
+                        />
+              
+          
           </div>
-          <div className="col-md-3">
-            <div className="form-group">
-              <select id="inputState" className="form-control">
-                <option selected>age</option>
-                <option>...</option>
-              </select>
-            </div>
+          <div className="form-group col-md-4">
+            <Select
+                          placeholder="Profession"
+                          id="profession"
+                          name="professrion"
+                          options={Profession}
+                          onChange={ProfessionHandler}
+                          className="form-control"
+                        />
+              
+          
           </div>
+          <div className="form-group col-md-4">
+            <Select
+                          placeholder="Loan Amount"
+                          id="loanAmount"
+                          name="loanAmount"
+                          options={LoanAmount}
+                          onChange={LoanAmountHandler}
+                          className="form-control"
+                        />
+              
+          
+          </div>
+          
+        
         </div>
 
         <div>
@@ -722,6 +773,28 @@ const LoanForm = () => {
           </div>
         </div>
       </div>
+      
+     
+
+<button type="button" className="btn btn-primary d-none" ref={modelRef} data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button>
+
+
+<div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="staticBackdropLabel">status</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+        {message}
+      </div>
+     
+    </div>
+  </div>
+</div>
     </>
   );
 };
