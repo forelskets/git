@@ -6,6 +6,10 @@ const ApplicationSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    UserId:{
+        type: String,
+        // require: true
+    },
     ProfileId:{
         type: String,
         // require: true

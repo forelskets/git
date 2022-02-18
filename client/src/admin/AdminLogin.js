@@ -1,7 +1,28 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
+import { NavLink , useHistory} from 'react-router-dom'
 
 const AdminLogin = () => {
+ const history = useHistory()
+  const [email , setEmail] = useState('')
+  const [password , setPassword] = useState('')
+
+  const loginSubmit = async() =>{
+    const response = await fetch('/login',{
+      method: 'POST',
+      headers:{
+        Accept: "application/json",
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({email , password})
+    })
+    const data = await response.json()
+
+    if(response.status === 400){
+      alert(data)
+    }else if(response.status === 200){
+      history.push('/admin')
+    }
+  }
   return (
     <div>
         <section className="vh-100 login-form">
@@ -39,30 +60,29 @@ const AdminLogin = () => {
                       <div className="form-outline mb-4">
                         <input
                           type="email"
-                          id="form2Example17"
+                          id="email"
+                          value={email}
+                          onChange={(e)=>setEmail(e.target.value)}
                           className="form-control form-control-lg"
                         />
-                        <label className="form-label" for="form2Example17"
-                          >Email address</label
-                        >
+                        <label className="form-label" for="form2Example17">Email address</label>
                       </div>
 
                       <div className="form-outline mb-4">
                         <input
                           type="password"
-                          id="form2Example27"
+                          id="password"
+                          value={password}
+                          onChange={(e)=>setPassword(e.target.value)}
                           className="form-control form-control-lg"
                         />
-                        <label className="form-label" for="form2Example27"
-                          >Password</label
-                        >
+                        <label className="form-label" for="form2Example27">Password</label>
                       </div>
 
                       <div className="pt-1 mb-4">
                         <button
                           className="btn login-btn btn-lg btn-block"
-                          type="button"
-                        >
+                          type="button" onClick={loginSubmit}>
                           Login
                         </button>
                       </div>

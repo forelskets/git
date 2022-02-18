@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
        type: Number,
        required: true
    },
+   RefralNo:{
+       type: Number,
+    //    required: true
+   },
    Name: {
        type: String,
        required: true

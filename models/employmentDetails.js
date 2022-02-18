@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const employmentSchema = new mongoose.Schema({
     UserId:{
         type: Number,
-        // required: true
+        required: true
     },
     CompanyName:{
         type: String,

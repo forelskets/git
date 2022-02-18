@@ -1,8 +1,11 @@
 import React from 'react'
-import AdminDashBoard from './AdminDashBoard'
+
 import AdminNavBar from './AdminNavBar'
 
 import AdminSideBar from './AdminSideBar'
+
+
+import {Route , Switch } from 'react-router-dom'
 import './style.css'
 
 
@@ -12,8 +15,12 @@ const AdminMain = () => {
     <AdminSideBar/>
     <section class="homes-section">
     <AdminNavBar />
-    {/* <AdminDashBoard /> */}
+   
+    
+         
+          
     </section>
+   
     </>
   )
 }

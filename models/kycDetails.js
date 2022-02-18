@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const kycSchema = new mongoose.Schema({
     UserId:{
         type: Number,
-        // required: true
+        required: true
     },
     AdhaarNo:{
         type: String,

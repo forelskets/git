@@ -5,8 +5,12 @@ const KYC = require("../models/kycDetails");
 const Application = require("../models/application");
 const multer = require("multer");
 const path = require("path");
+const User = require("../models/users");
+const auth = require('../middleware/Authentication')
 
 const ApplyLoanrouter = express.Router();
+
+
 ApplyLoanrouter.use(
   "/uploads",
   express.static(path.join(__dirname, "/uploads"))
@@ -28,6 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 ApplyLoanrouter.post(
   "/kycDetails",
+  auth,
   upload.fields([
     { name: "adhaar" },
     { name: "pan" },
@@ -98,7 +103,10 @@ ApplyLoanrouter.post(
      }
      else{
     console.log("else",req.body.loanPurpose,req.body.loanAmount ,req.body.profession)
+    
+   
     const profile = new Profile({
+      UserId: req.rootUser.UserId,
       FirstName: req.body.FirstName,
       LastName:  req.body.LastName,
       FatherName :  req.body.FatherName,
@@ -112,6 +120,7 @@ ApplyLoanrouter.post(
       ZIP:  req.body.ZIP,
     });
     const details = new EmploymentDetails({
+      UserId: req.rootUser.UserId,
       CompanyName:  req.body.CompanyName,
       Designation:  req.body.Designation,
       CurrentCompanyExperience:  req.body.CurrentCompanyExperience,
@@ -121,6 +130,7 @@ ApplyLoanrouter.post(
     });
     
     const kyc = new KYC({
+      UserId: req.rootUser.UserId,
       AdhaarNo: req.body.AdhaarNo,
       Adhaar: JSON.stringify(fileArray[0]),
       PanNo: req.body.PanNo,
@@ -135,6 +145,7 @@ ApplyLoanrouter.post(
     let count = await Application.collection.count();
     const counter = `AP${count}CRED`;
     const applicaiton = new Application({
+      UserId: req.rootUser.UserId,
       Purpose:req.body.loanPurpose,
       Amount:req.body.loanAmount,
       Profession:req.body.profession,

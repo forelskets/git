@@ -1,36 +1,28 @@
 const mongoose = require('mongoose');
 
 
-const bankOffersSchema = new mongoose.Schema({
+const planSchema = new mongoose.Schema({
     Id:{
         type: String,
-        require: true
+        // required: true
     },
-    Topic:{
+    BankName: {
         type: String,
-        require: true
+        required: true,
     },
-    Desc:{
+    BankNote:{
         type: String,
-        require: true
+        required: true
     },
-    BankId:{
-        type: String,
-        require: true
-    },
-    Status:{
-        type:Boolean,
-        require: true
-    },
-    Modified:{
+    BankService:{
         type:String,
-        require:true
+        required:true
     }
+    
         
     },{timestamps: true}
-
 )
 
-const BankOffers = new mongoose.model("bankOffers",bankOffersSchema);
+const Plan = new mongoose.model("bankOffer", planSchema);
 
-module.exports = BankOffers;
+module.exports = Plan;

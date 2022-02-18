@@ -3,9 +3,9 @@ const User = require('../models/users');
 const Otp = require('../models/otp');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const Bank = require('../models/bank');
+const Bank = require('../models/bankService');
+const BankNote = require('../models/bankOffer');
 const auth = require('../middleware/Authentication')
-
 
 
 router.post('/login', async (req, res)=>{
@@ -38,27 +38,55 @@ router.post('/login', async (req, res)=>{
    
 })
 
-router.post('/addBank', async(req, res)=>{
+router.post('/serviceAdd', async(req, res)=>{
    // console.log(req.body.bankId, req.body.bankName, req.body.bankShortName);
-  try{ const {bankId , bankName , bankShortName} = req.body;
-   const user = new Bank({Id:bankId, BankName:bankName , BankShortName:bankShortName});
-   const addBank = await user.save();
+  try{ const { note , serviceName} = req.body;
+   const bank = new Bank({  ServiceName:serviceName , Note:note });
+   const addBank = await bank.save();
    if(addBank){
-      res.status(201).json({message: "user register successfully"});
+      res.status(200).json("user register successfully");
+   }
+   else{
+      res.status(400).json("user not register successfully")
    }
 }catch(err){
    console.log(err);
 }
 })
 
-router.get('/addBank',auth, (req,res)=>{
-   Bank.find(function(err, data){
-      if(err) throw err;
-      // console.log(data);
+router.get('/serviceAdd', async (req,res)=>{
+  
+      const data = await Bank.find({})
+      res.status(200).json(data);
+   });
+
+   router.post('/addBank', async(req, res)=>{
+      console.log(req.body.bankNote, req.body.bankName , req.body.bankService);
+     try{ const { bankName , bankNote , bankService } = req.body;
+      const bank = new BankNote({  BankName: bankName ,BankNote : bankNote , BankService : bankService  });
+      const addBank = await bank.save();
+      console.log(addBank)
+      if(addBank){
+         res.status(200).json("Bank Successfully Added");
+      }
+      else{
+         res.status(400).json("Banks Not added ")
+      }
+   }catch(err){
+      console.log(err);
+   }
+   })
+   router.get('/addBankService', async (req,res)=>{
+       
+      const data = await Bank.find({})
       res.status(200).json(data);
    });
    
-})
+   router.get('/addBank', async (req,res)=>{
+  
+      const data = await BankNote.find({})
+      res.status(200).json(data);
+   });
 
 
 router.post('/userRegister',async (req, res)=>{
@@ -67,6 +95,7 @@ router.post('/userRegister',async (req, res)=>{
        const {  Name ,Email , Password , Mobile } = req.body;
 
        data1++ ;
+       refral = 3456789+ data1;
        if(!Name || !Email || !Password || !Mobile){
           res.status(400).send("please fill data")
        }
@@ -77,7 +106,7 @@ router.post('/userRegister',async (req, res)=>{
           res.status(400).json("user is already exist.")
        }
        else{
-      const user =  new User({RoleId: 2, UserId: data1 , Name , Email , Password , Mobile , Status:true });
+      const user =  new User({RoleId: 2, UserId: data1 ,RefralNo: refral , Name , Email , Password , Mobile , Status:true });
       const addUser = await user.save();
       // console.log(addUser);
       const otpFunc= async ()=>{
@@ -109,7 +138,7 @@ router.post('/userRegister',async (req, res)=>{
           requireTLS: true,
           auth: {
             user: "du19sh92yant@gmail.com",
-            pass: "du19rg92esh@gmail.com",
+            pass: "9457713868@",
           },
         });
       
@@ -183,7 +212,7 @@ router.post('/userLogin',   async(req, res)=>{
  })
 
 
-router.get('/dashboard' ,async (req,res)=>{
+router.get('/dashboard', auth ,async (req,res)=>{
     res.status(200).send(req.rootUser);
 })
 
@@ -192,14 +221,14 @@ router.get('/profile',auth, async (req,res)=>{
    res.status(200).send(req.rootUser);
 })
 
-router.get('/userMain', auth, async (req,res)=>{
+router.get('/userMain', auth,  async (req,res)=>{
    res.status(200).send(req.rootUser);
 })
 
 
 
-router.get('/userLogout', auth, (req,res)=>{
-   res.clearCookie('jwtoken', {path:'/'})
+router.get('/userLogout', auth , (req,res)=>{
+   res.clearCookie('jwtoken')
    res.status(200).send("user Logout");
 })
 
