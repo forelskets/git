@@ -3,8 +3,43 @@ import { NavLink, Link } from 'react-router-dom';
 import AdminSideBar from './AdminSideBar';
 import AdminNavBar from './AdminNavBar';
 import Select from 'react-select';
+import { OfferForm } from '../components/AddYourBankDetailsForm'
+
+import { AllBankOffer,
+  saveBankOffer} from '../_services/Admin.services'
+import toastr from 'toastr';
 
 const AdminOffer = () => {
+  
+  const [data, setData] = useState([]);
+
+  const callEffect = async () => {
+    let res = await AllBankOffer()
+    if (res?.status === 1 && Array.isArray(res?.data?.services)) {
+      setData(res.data.services)
+    } else {
+      if (res?.message)
+        toastr.success(res.message)
+    }
+  };
+
+  useEffect(() => {
+    callEffect();
+  }, []);
+
+
+  const saveOffers = async (obj, callback) => {
+    let res = await saveBankOffer(obj)
+    if (res?.status === 1) {
+      if (callback) { callback() }
+      callEffect()
+      toastr.success("Bank offer created!")
+    } else {
+      if (res?.message)
+        toastr.success(res.message)
+    }
+  }
+
   return (
     <>
       <AdminSideBar />
@@ -67,49 +102,7 @@ const AdminOffer = () => {
                 </div>
               </div>
             </div>
-            <div className="tab-pane fade" id="add">
-              <div className="col-md-11 mx-auto">
-                <span className="h2 mb-0">Add Your Bank Details</span>
-                <form action="">
-                  <div className="row my-4">
-                    <div className="col-md-4">
-                      <label htmlFor="bankName">Bank Name</label>
-                      <Select
-                        placeholder="Select Bank"
-                        id="bank"
-                        name="bank"
-                        className="bank"
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
-                      <label for="inputState">Select Service</label>
-
-                      <Select
-                        placeholder="Select Services"
-                        id="service"
-                        name="service"
-                        className="Service"
-                      />
-                    </div>
-                    <div className="col-md-4">
-                      <label htmlFor="bankNote">Note</label>
-
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="bankName"
-                        name="bankName"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="btn-div">
-                    <button className="btn yellow-btn">Cancel</button>
-                    <button className="btn form-btn">Submit</button>
-                  </div>
-                </form>
-              </div>
-            </div>
+            <OfferForm callApi={saveOffers}></OfferForm>
           </div>
         </div>
       </section>

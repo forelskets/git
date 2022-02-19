@@ -1,8 +1,6 @@
 export const rules = (field, rule) => {
-    console.log("ssssss",field)
-    console.log("ssssss",rule)
     let message = ""
-    if (field === "") {
+    if (field === "" || field === null ||(Array.isArray(field) && field.length === 0)) {
         message = rule.fieldName + " is Required!"
     }
     return message
