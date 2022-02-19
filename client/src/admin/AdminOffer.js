@@ -67,6 +67,7 @@ const AdminOffer = () => {
                     <div className="table-wrap">
                       <table className="table">
                         <thead className="thead-primary">
+                        
                           <tr>
                             <th>Sr. No.</th>
                             <th>Bank Name</th>
@@ -75,12 +76,13 @@ const AdminOffer = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          {Array.isArray(data) && data.map((obj, index)=>{
+                            return  <tr>
                             <th scope="row" className="scope">
-                              1
+                            {index+1}
                             </th>
-                            <td>chhavi</td>
-                            <td>chhavi</td>
+                            <td>{obj?.BankName?.BankName}</td>
+                            <td>{Array.isArray(obj.BankService) && obj.BankService.map(x=>(x.ServiceName)).join()}</td>
 
                             <td>
                               <NavLink to="#" className="btn btn-primary">
@@ -95,6 +97,8 @@ const AdminOffer = () => {
                               </NavLink>
                             </td>
                           </tr>
+                          })}
+                         
                         </tbody>
                       </table>
                     </div>

@@ -34,3 +34,9 @@ export const saveBankOffer = async (obj) => {
     console.log("res",res)
     return res
 }
+
+export const Applications = async (obj) => {
+    let res =await Api('GET', '/application', obj)
+    console.log("res",res)
+    return res
+}

@@ -27,12 +27,10 @@ export const OfferForm = (props) => {
     const SubmitForms = () => {
         let success = 0;
         let obj = {
-            Note: note, BankName: BankName?BankName.value:"",
+            Note: note, BankName: BankName ? BankName.value : "",
             BankService: Array.isArray(services) ? services.map(x => (x.value)) : null,
         }
         let Obj = Validate(obj, rules)
-
-        console.log("ccccc",obj,Obj)
         Object.keys(Obj).map(key => {
             if (Obj[key] !== "") {
                 success = 1
@@ -74,7 +72,7 @@ export const OfferForm = (props) => {
                         onChange={onChangeBank}
                         value={BankName}
                     />
-                     {error?.BankName && <div className='error-msg'>{error.BankName}</div>}
+                    {error?.BankName && <div className='error-msg'>{error.BankName}</div>}
                 </div>
                 <div className="form-group col-md-4">
                     <label for="inputState">Select Service</label>
@@ -86,12 +84,14 @@ export const OfferForm = (props) => {
                         options={serviceArray.map(x => ({ label: x.ServiceName ? x.ServiceName : "", value: x._id ? x._id : "" }))}
                         isMulti
                         onChange={onChangeServices}
+                        value={services}
                     />
-                     {error?.BankService && <div className='error-msg'>{error.BankService}</div>}
+                    {error?.BankService && <div className='error-msg'>{error.BankService}</div>}
                 </div>
                 <div className="col-md-4">
                     <label htmlFor="bankNote">Note</label>
                     <input
+                        placeholder='Note'
                         type="text"
                         className="form-control"
                         name="note"

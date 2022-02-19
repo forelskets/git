@@ -2,29 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AdminNavBar from './AdminNavBar';
 import AdminSideBar from './AdminSideBar';
-
+import { Applications } from '../_services/Admin.services'
 const AdminApplication = () => {
   const [data, setData] = useState([]);
-
-  const callEffect = async () => {
-    const response = await fetch('/application', {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-
-    const data111 = await response.json();
-    console.log(data111);
-    setData(data111?.data?.applications);
-  };
-
   useEffect(() => {
     callEffect();
   }, []);
-  console.log('data', data);
+
+  const callEffect = async () => {
+    let res = await Applications()
+    if (res.status === 1 && Array.isArray(res?.data?.applications)) {
+      setData(res?.data?.applications);
+    }
+  };
 
   return (
     <>
@@ -56,31 +46,6 @@ const AdminApplication = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {/* <tr>
-                              <th scope="row" className="scope">
-                                .com
-                              </th>
-                              <td>1 Year</td>
-                              <td>$70.00</td>
-                              <td>$5.00</td>
-                              <td>$5.00</td>
-                              <td>$70.00</td>
-                              <td>$5.00</td>
-                              <td>$5.00</td>
-                              <td>fdsdfd</td>
-                              <td>
-                                <NavLink to="#" className="btn btn-primary">
-                                  Sign Up
-                                </NavLink>
-                                <NavLink to="#" className="btn btn-secondary">
-                                  {' '}
-                                  log in
-                                </NavLink>
-                                <NavLink to="#" className="btn btn-danger">
-                                  Credit Up
-                                </NavLink>
-                              </td>
-                            </tr> */}
                             {Array.isArray(data) &&
                               data.map((d, i) => {
                                 return (

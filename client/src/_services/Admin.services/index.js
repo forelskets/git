@@ -3,5 +3,6 @@ export {service,
     createBank,
     AllBank,
     AllBankOffer,
-    saveBankOffer
+    saveBankOffer,
+    Applications
 } from './admin.services'
