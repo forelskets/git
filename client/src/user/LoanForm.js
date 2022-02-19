@@ -1,15 +1,15 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import Select from "react-select";
-import axios from "axios";
-import toastr  from "toastr";
+import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import axios from 'axios';
+import toastr from 'toastr';
 const LoanForm = () => {
-  const [message, setMessage] = useState('')
-  const modelRef = useRef(null)
-  const [pan, setPan] = useState("");
-  const [adhaar, setAdhaar] = useState("");
-  const [bankStmt, setBankStmt] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [message, setMessage] = useState('');
+  const modelRef = useRef(null);
+  const [pan, setPan] = useState('');
+  const [adhaar, setAdhaar] = useState('');
+  const [bankStmt, setBankStmt] = useState('');
+  const [photo, setPhoto] = useState('');
   const [profession, setProfession] = useState('');
 
   const EmployeeDatails = useRef(null);
@@ -21,33 +21,33 @@ const LoanForm = () => {
   const [loanPurpose, setLoanPurpose] = useState('');
   const [stateSelect, setStateSelect] = useState({});
   const [employeeProfile, setEmployeeProfile] = useState({
-    fname: "",
-    lname: "",
-    fathername: "",
-    email: "",
-    dob: "",
-    mobile: "",
-    address: "",
-    address2: "",
-    zip: "",
-    companyName: "",
-    designation: "",
-    currentCompanyExperience: "",
-    totalExperience: "",
-    monthlyIncome: "",
-    annualIncome: "",
-    adhaarNo: "",
-    panNo: "",
-    bankName: "",
-    accountNo: "",
-    IFSCcode: "",
-    loanAmount: "",
-    emi: "",
+    fname: '',
+    lname: '',
+    fathername: '',
+    email: '',
+    dob: '',
+    mobile: '',
+    address: '',
+    address2: '',
+    zip: '',
+    companyName: '',
+    designation: '',
+    currentCompanyExperience: '',
+    totalExperience: '',
+    monthlyIncome: '',
+    annualIncome: '',
+    adhaarNo: '',
+    panNo: '',
+    bankName: '',
+    accountNo: '',
+    IFSCcode: '',
+    loanAmount: '',
+    emi: '',
   });
   const options = [
-    { value: "Delhi", label: "Delhi" },
-    { value: "UP", label: "UP" },
-    { value: "Bihar", label: "Bihar" },
+    { value: 'Delhi', label: 'Delhi' },
+    { value: 'UP', label: 'UP' },
+    { value: 'Bihar', label: 'Bihar' },
   ];
 
   const LoanPurposeHandler = (tat) => {
@@ -65,50 +65,43 @@ const LoanForm = () => {
   const validateSelectOptions = () => {
     let disable = true;
     if (loanPurpose && profession && loanAmount) {
-      disable = false
+      disable = false;
     }
-    return disable
-  }
-
+    return disable;
+  };
 
   const OptionHandler = (tat) => {
     setStateSelect(tat);
-
   };
 
   const options1 = [
-    { value: "Aligarh", label: "Aligarh" },
-    { value: "Agra", label: "Agra" },
-    { value: "MuradaBad", label: "MuradaBad" },
+    { value: 'Aligarh', label: 'Aligarh' },
+    { value: 'Agra', label: 'Agra' },
+    { value: 'MuradaBad', label: 'MuradaBad' },
   ];
 
   const OptionHandler1 = (tat) => {
     setCitySelect(tat);
-
   };
 
   const LoanPurpose = [
-    { value: "Education Loan", label: "Education" },
-    { value: "Personal Loan", label: "Personal" },
+    { value: 'Education Loan', label: 'Education' },
+    { value: 'Personal Loan', label: 'Personal' },
   ];
-
 
   const LoanAmount = [
-    { value: "1 Lakh", label: "1Lakh" },
-    { value: "2 Lakh", label: "2Lakh" },
-
+    { value: '1 Lakh', label: '1Lakh' },
+    { value: '2 Lakh', label: '2Lakh' },
   ];
 
-
   const Profession = [
-    { value: "Salried", label: "Salried" },
-    { value: "BussinessMan", label: "BussinessMan" },
+    { value: 'Salried', label: 'Salried' },
+    { value: 'BussinessMan', label: 'BussinessMan' },
   ];
 
   const changeBox = () => {
     setCheckBoxStatus(!checkBoxStatus);
   };
-
 
   const ClickEmployeeDetails = () => {
     EmployeeDatails.current.click();
@@ -173,7 +166,7 @@ const LoanForm = () => {
   };
 
   const SubmitDetails = async () => {
-    let submit = 0
+    let submit = 0;
     let employeeProfileForm = {
       FirstName: employeeProfile.fname,
       LastName: employeeProfile.lname,
@@ -205,77 +198,81 @@ const LoanForm = () => {
       photo: photo,
       loanPurpose: loanPurpose,
       loanAmount: loanAmount,
-      profession: profession
+      profession: profession,
     };
 
-     Object.keys(employeeProfileForm).map((key)=>{
-         if(employeeProfileForm[key] === "" ||employeeProfileForm[key] === null || employeeProfileForm[key] === undefined){
-          submit=1;
-         }
-     })
+    Object.keys(employeeProfileForm).map((key) => {
+      if (
+        employeeProfileForm[key] === '' ||
+        employeeProfileForm[key] === null ||
+        employeeProfileForm[key] === undefined
+      ) {
+        submit = 1;
+      }
+    });
 
-     console.log("req:", employeeProfileForm);
+    console.log('req:', employeeProfileForm);
     if (submit === 0) {
       const formData = new FormData();
       for (const key in employeeProfileForm) {
         const element = employeeProfileForm[key];
         formData.append([key], element);
-        console.log([key])
+        console.log([key]);
       }
 
       try {
-        console.log("xios");
+        console.log('xios');
         const upload = await axios.post(
-          "http://localhost:5000/kycDetails",
-          formData
+          'http://localhost:3000/kycDetails',
+          formData,
+          { withCredentials: true }
         );
-        console.log(upload.data.status, upload.data.status === 401, "upload");
+        console.log(upload.data.status, upload.data.status === 401, 'upload');
         setEmployeeProfile({
           ...employeeProfile,
-          fname: "",
-          lname: "",
-          fathername: "",
-          email: "",
-          dob: "",
-          mobile: "",
-          address: "",
-          address2: "",
-          zip: "",
-          companyName: "",
-          designation: "",
-          currentCompanyExperience: "",
-          totalExperience: "",
-          monthlyIncome: "",
-          annualIncome: "",
-          adhaarNo: "",
-          panNo: "",
-          bankName: "",
-          accountNo: "",
-          IFSCcode: "",
-          loanAmount: "",
-          emi: "",
+          fname: '',
+          lname: '',
+          fathername: '',
+          email: '',
+          dob: '',
+          mobile: '',
+          address: '',
+          address2: '',
+          zip: '',
+          companyName: '',
+          designation: '',
+          currentCompanyExperience: '',
+          totalExperience: '',
+          monthlyIncome: '',
+          annualIncome: '',
+          adhaarNo: '',
+          panNo: '',
+          bankName: '',
+          accountNo: '',
+          IFSCcode: '',
+          loanAmount: '',
+          emi: '',
         });
-        setPan("")
-        setAdhaar("")
-        setBankStmt("")
-        setPhoto("")
-        setLoanPurpose('')
-        setLoanAmount('')
-        setProfession('')
+        setPan('');
+        setAdhaar('');
+        setBankStmt('');
+        setPhoto('');
+        setLoanPurpose('');
+        setLoanAmount('');
+        setProfession('');
         if (upload.data.status === 401) {
-          window.alert(upload.data.message)
+          window.alert(upload.data.message);
         } else if (upload.data.status === 200) {
           modelRef.current.click();
-          setMessage(upload.data.message)
+          setMessage(upload.data.message);
         }
       } catch (err) {
-        console.log("err", err);
+        console.log('err', err);
       }
-    
-    }else {
-      toastr.success("please fill all the field carefully")
-    } 
-  }
+    } else {
+      toastr.success('please fill all the field carefully');
+    }
+  };
 
   return (
     <>
@@ -350,9 +347,6 @@ const LoanForm = () => {
                   </Link>
                 </div>
               </nav>
-
-
-
 
               <div className="tab-content py-4">
                 <div className="tab-pane fade show active" id="step1">
@@ -738,7 +732,7 @@ const LoanForm = () => {
                         <br />
                       </div>
                     </div>
-                    {checkBoxStatus ? checkFunc() : ""}
+                    {checkBoxStatus ? checkFunc() : ''}
                     <div className="row justify-content-between my-3">
                       <div className="col-auto">
                         <button
@@ -767,21 +761,39 @@ const LoanForm = () => {
         </div>
       </div>
 
-      <button type="button" className="btn btn-primary d-none" ref={modelRef} data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      <button
+        type="button"
+        className="btn btn-primary d-none"
+        ref={modelRef}
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+      >
         Launch static backdrop modal
       </button>
 
-      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="staticBackdropLabel">status</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 className="modal-title" id="staticBackdropLabel">
+                status
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-            <div className="modal-body">
-              {message}
-            </div>
-
+            <div className="modal-body">{message}</div>
           </div>
         </div>
       </div>
@@ -791,13 +803,10 @@ const LoanForm = () => {
 
 export default LoanForm;
 
-
 // State: undefined
 // City: undefined
 // ZIP: ""
 // DOB: ""
-
-
 
 // adhaar: ""
 // bankStmt: ""

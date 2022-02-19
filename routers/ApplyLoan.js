@@ -31,7 +31,7 @@ const upload = multer({ storage: storage });
 
 ApplyLoanrouter.post(
   '/kycDetails',
-  // auth,
+  auth,
   upload.fields([
     { name: 'adhaar' },
     { name: 'pan' },
