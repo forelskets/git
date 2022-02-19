@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import AdminNavBar from './AdminNavBar';
 import AdminSideBar from './AdminSideBar';
 import { Applications, ApplicationsStateChange } from '../_services/Admin.services'
+import toastr from 'toastr'
+
 const AdminApplication = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -61,7 +63,7 @@ const AdminApplication = () => {
                                     <td>{d?.Amount}</td>
                                     <td>{d?.createdAt}</td>
                                     <td>
-                                      <Status status={d?.status} id={d._id}></Status>
+                                      <Status status={d?.status} id={d._id} ApiUpdate={callEffect}></Status>
                                     </td>
                                     <td>
                                       <NavLink
@@ -105,20 +107,35 @@ const AdminApplication = () => {
 export default AdminApplication;
 const statusArry = ["Pending", "Approved", "Processing", "Reject"]
 const Status = (props) => {
-  // const useState()
+   const [value, setValue] = useState("")
+   const [loader, setLoader] = useState(false)
+  useEffect(()=>{
+    setValue(props?.status)
+  },[props?.status])
   const onChange = (e) => {
     const { value } = e.target
+    setLoader(true)
     ApplicationsStateChange(props.id, { status: value }).then(res => {
-      console.log("sssssssssssssss", res)
+      if(res?.status === 1){
+        toastr.success("Success")
+        setValue(value)
+        setLoader(false)
+        if(props.ApiUpdate){
+          props.ApiUpdate()
+        }
+      }else{
+        setLoader(false)
+      }
     })
   }
 
   return <>
     {/* <p>{props?.status}</p> */}
-    <select value={props?.status} onChange={e => onChange}>
+    <select value={value} onChange={e => onChange(e)}>
       {statusArry.map((obj) => {
         return <option value={obj}>{obj}</option>
       })}
     </select>
+    {loader && <div>Loading...</div>}
   </>
 }
