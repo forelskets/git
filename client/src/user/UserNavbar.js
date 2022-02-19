@@ -3,9 +3,6 @@ import React from 'react'
 import { useEffect, useState } from "react";
 import {useHistory} from 'react-router-dom'
 
-
-     
-
 const UserNavbar = () => {
   const history = useHistory();
   const [profile , setProfile] = useState({});
@@ -69,9 +66,9 @@ const UserNavbar = () => {
                 <i class="fas fa-sign-in-alt"></i> <span>action</span>
               </li>
               <li class="dropdown-item" href="#" onClick={logOutFunc}>Logout</li>
+              {/* <li class="dropdown-item" href="#">Logout</li>
               <li class="dropdown-item" href="#">Logout</li>
-              <li class="dropdown-item" href="#">Logout</li>
-              <li class="dropdown-item" href="#">Logout</li>
+              <li class="dropdown-item" href="#">Logout</li> */}
             </div>
           </div>
         </div>

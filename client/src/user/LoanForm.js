@@ -2,14 +2,24 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import axios from "axios";
-
+import toastr  from "toastr";
 const LoanForm = () => {
-  const [message , setMessage] = useState('')
+  const [message, setMessage] = useState('')
   const modelRef = useRef(null)
   const [pan, setPan] = useState("");
   const [adhaar, setAdhaar] = useState("");
   const [bankStmt, setBankStmt] = useState("");
   const [photo, setPhoto] = useState("");
+  const [profession, setProfession] = useState('');
+
+  const EmployeeDatails = useRef(null);
+  const BasicDetails = useRef(null);
+  const KYCDetails = useRef(null);
+  const [checkBoxStatus, setCheckBoxStatus] = useState(false);
+  const [citySelect, setCitySelect] = useState({});
+  const [loanAmount, setLoanAmount] = useState('');
+  const [loanPurpose, setLoanPurpose] = useState('');
+  const [stateSelect, setStateSelect] = useState({});
   const [employeeProfile, setEmployeeProfile] = useState({
     fname: "",
     lname: "",
@@ -39,10 +49,31 @@ const LoanForm = () => {
     { value: "UP", label: "UP" },
     { value: "Bihar", label: "Bihar" },
   ];
-  const [stateSelect, setStateSelect] = useState({});
+
+  const LoanPurposeHandler = (tat) => {
+    setLoanPurpose(tat.value);
+  };
+
+  const ProfessionHandler = (tat) => {
+    setProfession(tat.value);
+  };
+
+  const LoanAmountHandler = (tat) => {
+    setLoanAmount(tat.value);
+  };
+
+  const validateSelectOptions = () => {
+    let disable = true;
+    if (loanPurpose && profession && loanAmount) {
+      disable = false
+    }
+    return disable
+  }
+
+
   const OptionHandler = (tat) => {
     setStateSelect(tat);
-    
+
   };
 
   const options1 = [
@@ -50,199 +81,35 @@ const LoanForm = () => {
     { value: "Agra", label: "Agra" },
     { value: "MuradaBad", label: "MuradaBad" },
   ];
-  const [citySelect, setCitySelect] = useState({});
+
   const OptionHandler1 = (tat) => {
     setCitySelect(tat);
-    
+
   };
 
   const LoanPurpose = [
     { value: "Education Loan", label: "Education" },
     { value: "Personal Loan", label: "Personal" },
-   
   ];
-  const [loanPurpose, setLoanPurpose] = useState('');
-  const LoanPurposeHandler = (tat) => {
-    setLoanPurpose(tat.value);
-    
-  };
+
+
   const LoanAmount = [
     { value: "1 Lakh", label: "1Lakh" },
     { value: "2 Lakh", label: "2Lakh" },
-   
+
   ];
 
-  const [loanAmount, setLoanAmount] = useState('');
-  const LoanAmountHandler = (tat) => {
-    setLoanAmount(tat.value);
-  };
-
- 
 
   const Profession = [
     { value: "Salried", label: "Salried" },
     { value: "BussinessMan", label: "BussinessMan" },
-   
   ];
-  const [profession, setProfession] = useState('');
-  const ProfessionHandler = (tat) => {
-    setProfession(tat.value);
-  };
- 
-  const EmployeeDatails = useRef(null);
-  const BasicDetails = useRef(null);
-  const KYCDetails = useRef(null);
-  const [checkBoxStatus, setCheckBoxStatus] = useState(false);
+
   const changeBox = () => {
     setCheckBoxStatus(!checkBoxStatus);
   };
 
-  const SubmitDetails = async () => {
-  
 
-    let employeeProfileForm = {
-      FirstName: employeeProfile.fname,
-      FirstName: employeeProfile.fname,
-      LastName: employeeProfile.lname,
-      FatherName: employeeProfile.fathername,
-      Email: employeeProfile.email,
-      DOB: employeeProfile.dob,
-      Mobile: employeeProfile.mobile,
-      CurrentAddress: employeeProfile.address,
-      CurrentAddress2: employeeProfile.address2,
-      State: stateSelect.value,
-      City: citySelect.value,
-      ZIP: employeeProfile.zip,
-      CompanyName: employeeProfile.companyName,
-      Designation: employeeProfile.designation,
-      CurrentCompanyExperience: employeeProfile.currentCompanyExperience,
-      TotalExperience: employeeProfile.totalExperience,
-      MonthlyIncome: employeeProfile.monthlyIncome,
-      AnnualIncome: employeeProfile.annualIncome,
-      AdhaarNo: employeeProfile.adhaarNo,
-      PanNo: employeeProfile.panNo,
-      BankName: employeeProfile.bankName,
-      AccountNo: employeeProfile.accountNo,
-      IFSCcode: employeeProfile.IFSCcode,
-      LoanAmount: employeeProfile.loanAmount,
-      EMI: employeeProfile.emi,
-      adhaar:adhaar,
-      pan:pan,
-      bankStmt:bankStmt,
-      photo:photo,
-      loanPurpose:loanPurpose,
-      loanAmount:loanAmount,
-      profession:profession
-    };
-    
-    if(
-    !employeeProfile.fname ||
-    !employeeProfile.lname ||
-    !employeeProfile.fathername ||
-    !employeeProfile.email ||
-    !employeeProfile.dob ||
-    !employeeProfile.mobile ||
-    !employeeProfile.address ||
-    !employeeProfile.address2 ||
-    !employeeProfile.zip ||
-    !employeeProfile.companyName ||
-    !employeeProfile.designation ||
-    !employeeProfile.currentCompanyExperience ||
-    !employeeProfile.totalExperience ||
-    !employeeProfile.monthlyIncome ||
-    !employeeProfile.annualIncome ||
-    !employeeProfile.adhaarNo ||
-    !employeeProfile.panNo ||
-    !employeeProfile.bankName ||
-    !employeeProfile.accountNo ||
-    !employeeProfile.IFSCcode ||
-    !employeeProfile.loanAmount ||
-    !employeeProfile.emi || 
-    !adhaar ||
-    !pan ||
-    !bankStmt ||
-    !photo ||
-    !loanPurpose ||
-    !loanAmount ||
-    !profession 
-    
-    )
-   
-     {
-      window.alert("please fill all the field carefully");
-    } else {
-    console.log("aaaresponse", employeeProfileForm);
-
-    
-    console.log("aaa    employeeProfileForm", employeeProfileForm);
-
-    const formData = new FormData();
-
-    for (const key in employeeProfileForm) {
-      const element = employeeProfileForm[key];
-      formData.append([key], element);
-      console.log([key])
-    }
-    
-    
-   
-
-    try {
-      console.log("xios");
-      const upload = await axios.post(
-        "http://localhost:5000/kycDetails",
-        formData
-      );
-      console.log(upload.data.status, upload.data.status === 401, "upload");
-      setEmployeeProfile({
-        ...employeeProfile,
-        fname: "",
-        lname: "",
-        fathername: "",
-        email: "",
-        dob: "",
-        mobile: "",
-        address: "",
-        address2: "",
-        zip: "",
-        companyName: "",
-        designation: "",
-        currentCompanyExperience: "",
-        totalExperience: "",
-        monthlyIncome: "",
-        annualIncome: "",
-        adhaarNo: "",
-        panNo: "",
-        bankName: "",
-        accountNo: "",
-        IFSCcode: "",
-        loanAmount: "",
-        emi: "",
-      });
-      setPan("")
-      setAdhaar("")
-      setBankStmt("")
-      setPhoto("")
-      setLoanPurpose('')
-      setLoanAmount('')
-      setProfession('')
-      if(upload.data.status === 401 ){
-           window.alert(upload.data.message)
-      }else if(upload.data.status === 200 ){
-        modelRef.current.click();
-        setMessage(upload.data.message)
-      }
-    } catch (err) {
-      console.log("err", err);
-      // throw err;
-    }
-    // if (response.status === 400) {
-    //   window.alert(data);
-    // } else if (response.status === 200) {
-    //   window.alert(data);
-    // }
-    // }
-  };}
   const ClickEmployeeDetails = () => {
     EmployeeDatails.current.click();
   };
@@ -305,54 +172,149 @@ const LoanForm = () => {
     });
   };
 
+  const SubmitDetails = async () => {
+    let submit = 0
+    let employeeProfileForm = {
+      FirstName: employeeProfile.fname,
+      LastName: employeeProfile.lname,
+      FatherName: employeeProfile.fathername,
+      Email: employeeProfile.email,
+      DOB: employeeProfile.dob,
+      Mobile: employeeProfile.mobile,
+      CurrentAddress: employeeProfile.address,
+      CurrentAddress2: employeeProfile.address2,
+      State: stateSelect.value,
+      City: citySelect.value,
+      ZIP: employeeProfile.zip,
+      CompanyName: employeeProfile.companyName,
+      Designation: employeeProfile.designation,
+      CurrentCompanyExperience: employeeProfile.currentCompanyExperience,
+      TotalExperience: employeeProfile.totalExperience,
+      MonthlyIncome: employeeProfile.monthlyIncome,
+      AnnualIncome: employeeProfile.annualIncome,
+      AdhaarNo: employeeProfile.adhaarNo,
+      PanNo: employeeProfile.panNo,
+      BankName: employeeProfile.bankName,
+      AccountNo: employeeProfile.accountNo,
+      IFSCcode: employeeProfile.IFSCcode,
+      LoanAmount: employeeProfile.loanAmount,
+      EMI: employeeProfile.emi,
+      adhaar: adhaar,
+      pan: pan,
+      bankStmt: bankStmt,
+      photo: photo,
+      loanPurpose: loanPurpose,
+      loanAmount: loanAmount,
+      profession: profession
+    };
+
+     Object.keys(employeeProfileForm).map((key)=>{
+         if(employeeProfileForm[key] === "" ||employeeProfileForm[key] === null || employeeProfileForm[key] === undefined){
+          submit=1;
+         }
+     })
+
+     console.log("req:", employeeProfileForm);
+    if (submit === 0) {
+      const formData = new FormData();
+      for (const key in employeeProfileForm) {
+        const element = employeeProfileForm[key];
+        formData.append([key], element);
+        console.log([key])
+      }
+
+      try {
+        console.log("xios");
+        const upload = await axios.post(
+          "http://localhost:5000/kycDetails",
+          formData
+        );
+        console.log(upload.data.status, upload.data.status === 401, "upload");
+        setEmployeeProfile({
+          ...employeeProfile,
+          fname: "",
+          lname: "",
+          fathername: "",
+          email: "",
+          dob: "",
+          mobile: "",
+          address: "",
+          address2: "",
+          zip: "",
+          companyName: "",
+          designation: "",
+          currentCompanyExperience: "",
+          totalExperience: "",
+          monthlyIncome: "",
+          annualIncome: "",
+          adhaarNo: "",
+          panNo: "",
+          bankName: "",
+          accountNo: "",
+          IFSCcode: "",
+          loanAmount: "",
+          emi: "",
+        });
+        setPan("")
+        setAdhaar("")
+        setBankStmt("")
+        setPhoto("")
+        setLoanPurpose('')
+        setLoanAmount('')
+        setProfession('')
+        if (upload.data.status === 401) {
+          window.alert(upload.data.message)
+        } else if (upload.data.status === 200) {
+          modelRef.current.click();
+          setMessage(upload.data.message)
+        }
+      } catch (err) {
+        console.log("err", err);
+      }
+    
+    }else {
+      toastr.success("please fill all the field carefully")
+    } 
+  }
+
   return (
     <>
       <div className="form-padding">
         <div className="row my-3">
-          
           <div className="form-group col-md-4">
             <Select
-                          placeholder="Purpose Of Loan"
-                          id="loanPurpose"
-                          name="loanPurpose"
-                          options={LoanPurpose}
-                          onChange={LoanPurposeHandler}
-                          className="form-control"
-                        />
-              
-          
+              placeholder="Purpose Of Loan"
+              id="loanPurpose"
+              name="loanPurpose"
+              options={LoanPurpose}
+              onChange={LoanPurposeHandler}
+              className="form-control"
+            />
           </div>
           <div className="form-group col-md-4">
             <Select
-                          placeholder="Profession"
-                          id="profession"
-                          name="professrion"
-                          options={Profession}
-                          onChange={ProfessionHandler}
-                          className="form-control"
-                        />
-              
-          
+              placeholder="Profession"
+              id="profession"
+              name="professrion"
+              options={Profession}
+              onChange={ProfessionHandler}
+              className="form-control"
+            />
           </div>
           <div className="form-group col-md-4">
             <Select
-                          placeholder="Loan Amount"
-                          id="loanAmount"
-                          name="loanAmount"
-                          options={LoanAmount}
-                          onChange={LoanAmountHandler}
-                          className="form-control"
-                        />
-              
-          
+              placeholder="Loan Amount"
+              id="loanAmount"
+              name="loanAmount"
+              options={LoanAmount}
+              onChange={LoanAmountHandler}
+              className="form-control"
+            />
           </div>
-          
-        
         </div>
-
         <div>
           <div className="col-12 m-auto">
-            <form action="" id="registration" enctype="multipart/form-data">
+            <form action="" id="registration" encType="multipart/form-data">
               <nav className="recent-sales-box-nav">
                 <div
                   className="nav nav-pills nav-fill"
@@ -388,6 +350,10 @@ const LoanForm = () => {
                   </Link>
                 </div>
               </nav>
+
+
+
+
               <div className="tab-content py-4">
                 <div className="tab-pane fade show active" id="step1">
                   <div className="form-1">
@@ -401,6 +367,7 @@ const LoanForm = () => {
                           value={employeeProfile.fname}
                           onChange={ProfileChangeHandler}
                           placeholder=" First Name"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -412,6 +379,7 @@ const LoanForm = () => {
                           value={employeeProfile.lname}
                           onChange={ProfileChangeHandler}
                           placeholder=" Last Name"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -423,6 +391,7 @@ const LoanForm = () => {
                           value={employeeProfile.fathername}
                           onChange={ProfileChangeHandler}
                           placeholder="Fathers Name"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -436,6 +405,7 @@ const LoanForm = () => {
                           value={employeeProfile.email}
                           onChange={ProfileChangeHandler}
                           placeholder="Email"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -447,6 +417,7 @@ const LoanForm = () => {
                           value={employeeProfile.dob}
                           onChange={ProfileChangeHandler}
                           placeholder="Date Of Birth"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -458,6 +429,7 @@ const LoanForm = () => {
                           value={employeeProfile.mobile}
                           onChange={ProfileChangeHandler}
                           placeholder="mobile Number"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -470,6 +442,7 @@ const LoanForm = () => {
                         value={employeeProfile.address}
                         onChange={ProfileChangeHandler}
                         placeholder="1234 Main Street aligarh"
+                        disabled={validateSelectOptions()}
                       />
                     </div>
                     <div className="form-group my-3">
@@ -481,6 +454,7 @@ const LoanForm = () => {
                         value={employeeProfile.address2}
                         onChange={ProfileChangeHandler}
                         placeholder="Apartment, studio, or floor"
+                        disabled={validateSelectOptions()}
                       />
                     </div>
                     <div className="form-row my-3 row">
@@ -492,6 +466,7 @@ const LoanForm = () => {
                           onChange={OptionHandler}
                           options={options}
                           className="form-control"
+                          isDisabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -502,6 +477,7 @@ const LoanForm = () => {
                           options={options1}
                           onChange={OptionHandler1}
                           className="form-control"
+                          isDisabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-3">
@@ -513,6 +489,7 @@ const LoanForm = () => {
                           name="zip"
                           value={employeeProfile.zip}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -542,6 +519,7 @@ const LoanForm = () => {
                           placeholder="Current company name"
                           value={employeeProfile.companyName}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-6">
@@ -553,6 +531,7 @@ const LoanForm = () => {
                           placeholder="Post/Designination"
                           value={employeeProfile.designation}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -566,6 +545,7 @@ const LoanForm = () => {
                           placeholder="Current Work Expirience"
                           value={employeeProfile.currentCompanyExperience}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-6">
@@ -577,6 +557,7 @@ const LoanForm = () => {
                           placeholder="Total Work Expirience"
                           value={employeeProfile.totalExperience}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -590,6 +571,7 @@ const LoanForm = () => {
                           placeholder="Monthly Income"
                           value={employeeProfile.monthlyIncome}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-6">
@@ -601,6 +583,7 @@ const LoanForm = () => {
                           placeholder="Annual Income"
                           value={employeeProfile.annualIncome}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -639,6 +622,7 @@ const LoanForm = () => {
                           placeholder="Adhar Card number"
                           value={employeeProfile.adhaarNo}
                           onChange={ProfileChangeHandler}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-6">
@@ -649,6 +633,7 @@ const LoanForm = () => {
                           id="adhaar"
                           placeholder="Post/Designination"
                           onChange={AdhaarUpload}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -662,6 +647,7 @@ const LoanForm = () => {
                           value={employeeProfile.panNo}
                           onChange={ProfileChangeHandler}
                           placeholder="PAN-Card number"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-6">
@@ -671,6 +657,7 @@ const LoanForm = () => {
                           name="pan"
                           id="pan"
                           onChange={PanUpload}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -684,6 +671,7 @@ const LoanForm = () => {
                           value={employeeProfile.bankName}
                           onChange={ProfileChangeHandler}
                           placeholder="Bank Name"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -695,6 +683,7 @@ const LoanForm = () => {
                           value={employeeProfile.accountNo}
                           onChange={ProfileChangeHandler}
                           placeholder="Account number"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-4">
@@ -706,6 +695,7 @@ const LoanForm = () => {
                           value={employeeProfile.IFSCcode}
                           onChange={ProfileChangeHandler}
                           placeholder="IFSC Code"
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -718,6 +708,7 @@ const LoanForm = () => {
                           name="photo"
                           id="photo"
                           onChange={PhotoUpload}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                       <div className="form-group col-md-6">
@@ -728,6 +719,7 @@ const LoanForm = () => {
                           name="bankStmt"
                           id="bankStmt"
                           onChange={BankStmtUpload}
+                          disabled={validateSelectOptions()}
                         />
                       </div>
                     </div>
@@ -740,6 +732,7 @@ const LoanForm = () => {
                           name="HaveLoan"
                           value="1"
                           onChange={changeBox}
+                          disabled={validateSelectOptions()}
                         />
                         <label for="vehicle1">already have a Loan</label>
                         <br />
@@ -773,30 +766,41 @@ const LoanForm = () => {
           </div>
         </div>
       </div>
-      
-     
 
-<button type="button" className="btn btn-primary d-none" ref={modelRef} data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
+      <button type="button" className="btn btn-primary d-none" ref={modelRef} data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Launch static backdrop modal
+      </button>
 
+      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="staticBackdropLabel">status</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              {message}
+            </div>
 
-<div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div className="modal-dialog modal-dialog-centered">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="staticBackdropLabel">status</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
       </div>
-      <div className="modal-body">
-        {message}
-      </div>
-     
-    </div>
-  </div>
-</div>
     </>
   );
 };
 
 export default LoanForm;
+
+
+// State: undefined
+// City: undefined
+// ZIP: ""
+// DOB: ""
+
+
+
+// adhaar: ""
+// bankStmt: ""
+// pan: ""
+// photo: ""
+// EMI: ""

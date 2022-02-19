@@ -1,5 +1,6 @@
-import { Switch, Route, Redirect } from 'react-router-dom';
-
+import { Switch, Route } from 'react-router-dom';
+import toastr from 'toastr'
+import './assets/styles/toastr.min.css'
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 
@@ -19,12 +20,15 @@ import AdminDashBoard from './admin/AdminDashBoard';
 import AdminBank from './admin/AdminBank';
 import AdminOffer from './admin/AdminOffer';
 
+toastr.options = {
+  "positionClass": "toast-top-center",
+}
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route exact path="/sign-up" exact component={SignUp} />
-        <Route exact path="/sign-in" exact component={SignIn} />
+        <Route exact path="/sign-up"  component={SignUp} />
+        <Route exact path="/sign-in" component={SignIn} />
         <Route path="/" exact component={FrontMain} />
         <Route path="/applyloan" component={ApplyLoan} />
         <Route path="/nav" component={UserMain} />
