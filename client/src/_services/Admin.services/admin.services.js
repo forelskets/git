@@ -40,3 +40,9 @@ export const Applications = async (obj) => {
     console.log("res",res)
     return res
 }
+
+export const ApplicationsStateChange = async (obj) => {
+    let res =await Api('PUT', '/application/status', obj)
+    console.log("res",res)
+    return res
+}

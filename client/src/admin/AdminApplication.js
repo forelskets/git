@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AdminNavBar from './AdminNavBar';
 import AdminSideBar from './AdminSideBar';
-import { Applications } from '../_services/Admin.services'
+import { Applications, ApplicationsStateChange } from '../_services/Admin.services'
 const AdminApplication = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -60,7 +60,9 @@ const AdminApplication = () => {
                                     <td>{d?.KycId?.PanNo}</td>
                                     <td>{d?.Amount}</td>
                                     <td>{d?.createdAt}</td>
-                                    <td>{d?.status}</td>
+                                    <td>
+                                      <Status status={d?.status} id={d._id}></Status>
+                                    </td>
                                     <td>
                                       <NavLink
                                         to="#"
@@ -101,3 +103,22 @@ const AdminApplication = () => {
 };
 
 export default AdminApplication;
+const statusArry = ["Pending", "Approved", "Processing", "Reject"]
+const Status = (props) => {
+  // const useState()
+  const onChange = (e) => {
+    const { value } = e.target
+    ApplicationsStateChange(props.id, { status: value }).then(res => {
+      console.log("sssssssssssssss", res)
+    })
+  }
+
+  return <>
+    {/* <p>{props?.status}</p> */}
+    <select value={props?.status} onChange={e => onChange}>
+      {statusArry.map((obj) => {
+        return <option value={obj}>{obj}</option>
+      })}
+    </select>
+  </>
+}
