@@ -73,10 +73,13 @@ exports.getApplicationList = async (req, res, next) => {
       req.body.loanAmount,
       req.body.profession
     );
-    req.rootUser = {};
-    req.rootUser.UserId = '620fe9f80c762c22263a6b42';
+    // req.rootUser = {};
+    // req.rootUser.UserId = '620fe9f80c762c22263a6b42';
+    console.log('userId:', req.UserId);
+    console.log('aa:', req.rootUser);
+
     const profile = new Profile({
-      UserId: req.rootUser.UserId,
+      UserId: req.userId,
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
       FatherName: req.body.FatherName,
@@ -89,8 +92,10 @@ exports.getApplicationList = async (req, res, next) => {
       City: req.body.City,
       ZIP: req.body.ZIP,
     });
+
+    console.log('profile:', profile);
     const details = new EmploymentDetails({
-      UserId: req.rootUser.UserId,
+      UserId: req.userId,
       CompanyName: req.body.CompanyName,
       Designation: req.body.Designation,
       CurrentCompanyExperience: req.body.CurrentCompanyExperience,
@@ -100,7 +105,7 @@ exports.getApplicationList = async (req, res, next) => {
     });
 
     const kyc = new KYC({
-      UserId: req.rootUser.UserId,
+      UserId: req.userId,
       AdhaarNo: req.body.AdhaarNo,
       Adhaar: JSON.stringify(fileArray[0]),
       PanNo: req.body.PanNo,
@@ -115,9 +120,6 @@ exports.getApplicationList = async (req, res, next) => {
     let count = await Application.collection.count();
     const counter = `AP${count}CRED`;
 
-    console.log('req', req);
-    console.log('req.body', req.body);
-
     console.log('profile', profile);
     console.log('details', details);
     console.log('kyc', kyc);
@@ -129,7 +131,7 @@ exports.getApplicationList = async (req, res, next) => {
       console.log('aaa', profileSave, detailsSave, kycSave);
 
       const applicaiton = new Application({
-        UserId: req.rootUser.UserId,
+        UserId: req.userId,
         ProfileId: profileSave.id,
         EploymentId: detailsSave.id,
         KycId: kycSave.id,
@@ -142,19 +144,21 @@ exports.getApplicationList = async (req, res, next) => {
       console.log('applicaiton', applicaiton);
 
       const applicationSave = await applicaiton.save();
+      console.log('aa applicaiton', applicationSave);
+
       if (profileSave && detailsSave && kycSave && applicationSave) {
-        res.send({
+        return res.send({
           status: 200,
           message: `Your Application Submitted successfully and You application no. is ${counter}`,
         });
       } else {
-        res.send({
+        return res.send({
           status: 401,
           message: 'any technical problems please try again',
         });
       }
     } catch (err) {
-      console.log(err);
+      console.log('err', error);
     }
   }
 };

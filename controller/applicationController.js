@@ -31,6 +31,33 @@ exports.getApplicationList = async (req, res, next) => {
   }
 };
 
+exports.updateApplicationStatus = async (req, res, next) => {
+  const id = req.params.id;
+  const { status } = req.body;
+  try {
+    const result = await Application.findById(id);
+    if (result) {
+      await result.update({
+        status: status,
+      });
+
+      return res.send({
+        status: 1,
+        message: 'Updated',
+      });
+    } else {
+      return res.send({
+        status: 0,
+        message: 'no_record_found',
+      });
+    }
+  } catch (error) {
+    return res.send({
+      status: 0,
+      message: 'something_went_wrong',
+    });
+  }
+};
 // exports.getApplicationById = async (req, res, next) => {
 //   const id = req.params.id;
 //   var options = {
