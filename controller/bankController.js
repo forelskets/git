@@ -3,7 +3,7 @@ const Bank = require('../models/bank');
 exports.getBankList = async (req, res, next) => {
   console.log('getBankList');
   try {
-    var result = await Bank.find();
+    var result = await Bank.find().sort({ _id: 'desc' });
     if (result && result.length > 0) {
       return res.send({
         status: 1,

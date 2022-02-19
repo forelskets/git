@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AdminNavBar from './AdminNavBar';
 import AdminSideBar from './AdminSideBar';
 
 const AdminApplication = () => {
+  const [data, setData] = useState([]);
+
+  const callEffect = async () => {
+    const response = await fetch('/application', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    const data111 = await response.json();
+    console.log(data111);
+    setData(data111?.data?.applications);
+  };
+
+  useEffect(() => {
+    callEffect();
+  }, []);
+  console.log('data', data);
+
   return (
     <>
       <AdminSideBar />
@@ -34,7 +56,7 @@ const AdminApplication = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
+                            {/* <tr>
                               <th scope="row" className="scope">
                                 .com
                               </th>
@@ -58,7 +80,46 @@ const AdminApplication = () => {
                                   Credit Up
                                 </NavLink>
                               </td>
-                            </tr>
+                            </tr> */}
+                            {Array.isArray(data) &&
+                              data.map((d, i) => {
+                                return (
+                                  <tr>
+                                    <th scope="row" className="scope">
+                                      {i + 1}
+                                    </th>
+                                    <td>{d?.UserId?.Name}</td>
+                                    <td>{d?.UserId?.Mobile}</td>
+                                    <td>{d?.ApplicationNo}</td>
+                                    <td>{d?.KycId?.AdhaarNo}</td>
+                                    <td>{d?.KycId?.PanNo}</td>
+                                    <td>{d?.Amount}</td>
+                                    <td>{d?.createdAt}</td>
+                                    <td>{d?.status}</td>
+                                    <td>
+                                      <NavLink
+                                        to="#"
+                                        className="btn btn-primary"
+                                      >
+                                        Sign Up
+                                      </NavLink>
+                                      <NavLink
+                                        to="#"
+                                        className="btn btn-secondary"
+                                      >
+                                        {' '}
+                                        log in
+                                      </NavLink>
+                                      <NavLink
+                                        to="#"
+                                        className="btn btn-danger"
+                                      >
+                                        Credit Up
+                                      </NavLink>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                           </tbody>
                         </table>
                       </div>

@@ -2,21 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AdminSideBar from './AdminSideBar';
 import AdminNavBar from './AdminNavBar';
-import { AdminBankForm } from '../components/AddYourBankDetailsForm'
-import { createBank,
-  AllBank } from '../_services/Admin.services'
+import { AdminBankForm } from '../components/AddYourBankDetailsForm';
+import { createBank, AllBank } from '../_services/Admin.services';
 import toastr from 'toastr';
 
 const AdminBank = () => {
   const [data, setData] = useState([]);
 
   const callEffect = async () => {
-    let res = await AllBank()
+    let res = await AllBank();
     if (res?.status === 1 && Array.isArray(res?.data?.services)) {
-      setData(res.data.services)
+      setData(res.data.services);
     } else {
-      if (res?.message)
-        toastr.success(res.message)
+      if (res?.message) toastr.success(res.message);
     }
   };
 
@@ -25,16 +23,17 @@ const AdminBank = () => {
   }, []);
 
   const saveBank = async (obj, callback) => {
-    let res = await createBank(obj)
+    let res = await createBank(obj);
     if (res?.status === 1) {
-      if (callback) { callback() }
-      callEffect()
-      toastr.success("Bank created!")
+      if (callback) {
+        callback();
+      }
+      callEffect();
+      toastr.success('Bank created!');
     } else {
-      if (res?.message)
-        toastr.success(res.message)
+      if (res?.message) toastr.success(res.message);
     }
-  }
+  };
 
   return (
     <>
@@ -71,30 +70,41 @@ const AdminBank = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {Array.isArray(data) && data.map((obj , index)=>{
-                            return  <tr>
-                            <th scope="row" className="scope">
-                            {index+1}
-                            </th>
-                            <td>{obj?.BankName}</td>
-                            <td>{obj?.Note}</td>
-                            <td>
-                              <sectionsection>
-                                <NavLink to="#" className="btn btn-primary">
-                                  Sign Up
-                                </NavLink>
-                                <NavLink to="#" className="btn btn-secondary">
-                                  {' '}
-                                  log in
-                                </NavLink>
-                                <NavLink to="#" className="btn btn-danger">
-                                  Credit Up
-                                </NavLink>
-                              </sectionsection>
-                            </td>
-                          </tr>
-                          })}
-                         
+                          {Array.isArray(data) &&
+                            data.map((obj, index) => {
+                              return (
+                                <tr>
+                                  <th scope="row" className="scope">
+                                    {index + 1}
+                                  </th>
+                                  <td>{obj?.BankName}</td>
+                                  <td>{obj?.Note}</td>
+                                  <td>
+                                    <sectionsection>
+                                      <NavLink
+                                        to="#"
+                                        className="btn btn-primary"
+                                      >
+                                        Sign Up
+                                      </NavLink>
+                                      <NavLink
+                                        to="#"
+                                        className="btn btn-secondary"
+                                      >
+                                        {' '}
+                                        log in
+                                      </NavLink>
+                                      <NavLink
+                                        to="#"
+                                        className="btn btn-danger"
+                                      >
+                                        Credit Up
+                                      </NavLink>
+                                    </sectionsection>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </table>
                     </div>

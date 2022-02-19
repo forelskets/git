@@ -3,7 +3,7 @@ const BankService = require('../models/bankService');
 exports.getServiceList = async (req, res, next) => {
   console.log('getServiceList');
   try {
-    var result = await BankService.find();
+    var result = await BankService.find().sort({ _id: 'desc' });
     if (result && result.length > 0) {
       return res.send({
         status: 1,
