@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Validate } from '../../_helper'
-export const BankDetailsForm = () => {
+export const BankDetailsForm = (props) => {
     const [note, setNote] = useState('');
     const [serviceName, setServiceName] = useState('');
     const [error, setError] = useState('');
     const SubmitForms = () => {
         let success = 0;
-        let obj = { note, serviceName }
+        let obj = { Note:note, ServiceName:serviceName }
         let Obj = Validate(obj, rules)
         Object.keys(Obj).map(key => {
             if (Obj[key] !== "") {
@@ -14,11 +14,14 @@ export const BankDetailsForm = () => {
             }
         })
         setError(Obj)
-
         if (success === 0) {
-
+           props.callApi(obj,callback)
         }
-        console.log("Obj", Obj)
+    }
+
+    const callback=()=>{
+        setServiceName("");
+        setNote("");
     }
 
     return <div className="tab-pane fade" id="profile">

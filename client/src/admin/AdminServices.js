@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AdminSideBar from './AdminSideBar';
 import AdminNavBar from './AdminNavBar';
-import {BankDetailsForm} from '../components/AddYourBankDetailsForm'
+import { BankDetailsForm } from '../components/AddYourBankDetailsForm'
+import { service } from '../_services/Admin.services'
+import toastr from 'toastr';
 const AdminServices = () => {
   const [note, setNote] = useState('');
   const [serviceName, setServiceName] = useState('');
@@ -48,6 +50,22 @@ const AdminServices = () => {
   useEffect(() => {
     callEffect();
   }, []);
+
+
+  const saveService = async (obj, callback) => {
+    let res = await service(obj)
+    if (res.status === 1) {
+      if (callback) { callback() }
+      var a = document.createElement('a');
+      a.href = "#home";
+      a.click()
+      document.body.appendChild(a);
+      toastr.success("Service created!")
+    } else {
+      if (res?.message)
+        toastr.success(res.message)
+    }
+  }
 
   return (
     <>
@@ -129,7 +147,7 @@ const AdminServices = () => {
                 </div>
               </div>
             </div>
-             <BankDetailsForm></BankDetailsForm>
+            <BankDetailsForm callApi={saveService}></BankDetailsForm>
           </div>
         </div>
       </section>
