@@ -2,8 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AdminSideBar from './AdminSideBar';
 import AdminNavBar from './AdminNavBar';
+import { AdminBankForm } from '../components/AddYourBankDetailsForm'
+import { createBank,
+  AllBank } from '../_services/Admin.services'
+import toastr from 'toastr';
 
 const AdminBank = () => {
+  const [data, setData] = useState([]);
+
+  const callEffect = async () => {
+    let res = await AllBank()
+    if (res?.status === 1 && Array.isArray(res?.data?.services)) {
+      setData(res.data.services)
+    } else {
+      if (res?.message)
+        toastr.success(res.message)
+    }
+  };
+
+  useEffect(() => {
+    callEffect();
+  }, []);
+
+  const saveBank = async (obj, callback) => {
+    let res = await createBank(obj)
+    if (res?.status === 1) {
+      if (callback) { callback() }
+      callEffect()
+      toastr.success("Bank created!")
+    } else {
+      if (res?.message)
+        toastr.success(res.message)
+    }
+  }
+
   return (
     <>
       <AdminSideBar />
@@ -39,13 +71,13 @@ const AdminBank = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          {Array.isArray(data) && data.map((obj , index)=>{
+                            return  <tr>
                             <th scope="row" className="scope">
-                              1
+                            {index+1}
                             </th>
-                            <td></td>
-                            <td></td>
-
+                            <td>{obj?.BankName}</td>
+                            <td>{obj?.Note}</td>
                             <td>
                               <sectionsection>
                                 <NavLink to="#" className="btn btn-primary">
@@ -61,6 +93,8 @@ const AdminBank = () => {
                               </sectionsection>
                             </td>
                           </tr>
+                          })}
+                         
                         </tbody>
                       </table>
                     </div>
@@ -68,40 +102,7 @@ const AdminBank = () => {
                 </div>
               </div>
             </div>
-            <div className="tab-pane fade" id="profile">
-              <div className="col-md-11 mx-auto">
-                <span className="h2 mb-0">Add Your Bank Details</span>
-                <form>
-                  <div className="row my-4">
-                    <div className="col-md-4">
-                      <label htmlFor="bankName">Bank Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="bankName"
-                        id="bankName"
-                      />
-                    </div>
-
-                    <div className="col-md-4">
-                      <label htmlFor="note">Note</label>
-
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="note"
-                        id="note"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="btn-div">
-                    <button className="btn yellow-btn">Cancel</button>
-                    <button className="btn form-btn">Submit</button>
-                  </div>
-                </form>
-              </div>
-            </div>
+            <AdminBankForm callApi={saveBank}></AdminBankForm>
           </div>
         </div>
       </section>

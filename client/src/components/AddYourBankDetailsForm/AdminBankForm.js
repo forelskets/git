@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Validate } from '../../_helper'
-export const BankDetailsForm = (props) => {
+export const AdminBankForm = (props) => {
     const [note, setNote] = useState('');
     const [serviceName, setServiceName] = useState('');
     const [error, setError] = useState('');
     const SubmitForms = () => {
         let success = 0;
-        let obj = { Note: note, ServiceName: serviceName }
+        let obj = { Note: note, BankName: serviceName }
         let Obj = Validate(obj, rules)
         Object.keys(Obj).map(key => {
             if (Obj[key] !== "") {
@@ -30,7 +30,7 @@ export const BankDetailsForm = (props) => {
             {/* <form> */}
             <div className="row my-4">
                 <div className="col-md-4">
-                    <label htmlFor="serviceName">Service Name</label>
+                    <label htmlFor="serviceName">Bank Name</label>
                     <input
                         type="text"
                         className="form-control"
@@ -39,7 +39,7 @@ export const BankDetailsForm = (props) => {
                         value={serviceName}
                         onChange={(e) => { setServiceName(e.target.value); setError("") }}
                     />
-                    {error?.ServiceName && <div className='error-msg'>{error.ServiceName}</div>}
+                    {error?.BankName && <div className='error-msg'>{error.BankName}</div>}
                 </div>
 
                 <div className="col-md-4">
@@ -73,8 +73,8 @@ const rules = [{
     type: 'string',
     require: true
 }, {
-    field: 'ServiceName',
-    fieldName: 'Service Name',
+    field: 'BankName',
+    fieldName: 'Bank Name',
     type: 'string',
     require: true
 }]

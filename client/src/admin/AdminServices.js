@@ -11,7 +11,7 @@ const AdminServices = () => {
 
   const callEffect = async () => {
     let res = await AllService()
-    if (res.status === 1 && Array.isArray(res?.data?.services)) {
+    if (res?.status === 1 && Array.isArray(res?.data?.services)) {
       setData(res.data.services)
     } else {
       if (res?.message)
@@ -26,7 +26,7 @@ const AdminServices = () => {
 
   const saveService = async (obj, callback) => {
     let res = await service(obj)
-    if (res.status === 1) {
+    if (res?.status === 1) {
       if (callback) { callback() }
       callEffect()
       toastr.success("Service created!")
