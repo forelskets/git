@@ -3,48 +3,20 @@ import { NavLink, Link } from 'react-router-dom';
 import AdminSideBar from './AdminSideBar';
 import AdminNavBar from './AdminNavBar';
 import { BankDetailsForm } from '../components/AddYourBankDetailsForm'
-import { service } from '../_services/Admin.services'
+import { service, AllService } from '../_services/Admin.services'
 import toastr from 'toastr';
 const AdminServices = () => {
-  const [note, setNote] = useState('');
-  const [serviceName, setServiceName] = useState('');
+
   const [data, setData] = useState([]);
 
-  const SubmitForms = async (e) => {
-    e.preventDefault();
-
-    const response = await fetch('/serviceAdd', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ note, serviceName }),
-    });
-
-    const data = await response.json();
-    console.log(data);
-    if (response.status === 200) {
-      window.alert(data);
-    } else if (response.status === 400) {
-      window.alert(data);
-    }
-  };
-
   const callEffect = async () => {
-    const response = await fetch('/serviceAdd', {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-
-    const data = await response.json();
-    console.log(data);
-    setData(data);
+    let res = await AllService()
+    if (res.status === 1 && Array.isArray(res?.data?.services)) {
+      setData(res.data.services)
+    } else {
+      if (res?.message)
+        toastr.success(res.message)
+    }
   };
 
   useEffect(() => {
@@ -56,10 +28,7 @@ const AdminServices = () => {
     let res = await service(obj)
     if (res.status === 1) {
       if (callback) { callback() }
-      var a = document.createElement('a');
-      a.href = "#home";
-      a.click()
-      document.body.appendChild(a);
+      callEffect()
       toastr.success("Service created!")
     } else {
       if (res?.message)
@@ -102,7 +71,7 @@ const AdminServices = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {data.map((Element, ind) => {
+                          {Array.isArray(data) && data.map((Element, ind) => {
                             return (
                               <>
                                 <tr>
@@ -111,20 +80,11 @@ const AdminServices = () => {
                                   </th>
                                   <td>{Element.ServiceName}</td>
                                   <td>{Element.Note}</td>
-
                                   <td>
                                     <sectionsection>
                                       {' '}
-                                      <NavLink
-                                        to="#"
-                                        className="btn btn-primary"
-                                      >
-                                        Sign Up
-                                      </NavLink>
-                                      <NavLink
-                                        to="#"
-                                        className="btn btn-secondary"
-                                      >
+                                      <NavLink to="#" className="btn btn-primary">Sign Up</NavLink>
+                                      <NavLink  to="#" className="btn btn-secondary"  >
                                         {' '}
                                         log in
                                       </NavLink>

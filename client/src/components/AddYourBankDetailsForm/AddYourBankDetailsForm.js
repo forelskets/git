@@ -6,7 +6,7 @@ export const BankDetailsForm = (props) => {
     const [error, setError] = useState('');
     const SubmitForms = () => {
         let success = 0;
-        let obj = { Note:note, ServiceName:serviceName }
+        let obj = { Note: note, ServiceName: serviceName }
         let Obj = Validate(obj, rules)
         Object.keys(Obj).map(key => {
             if (Obj[key] !== "") {
@@ -15,11 +15,11 @@ export const BankDetailsForm = (props) => {
         })
         setError(Obj)
         if (success === 0) {
-           props.callApi(obj,callback)
+            props.callApi(obj, callback)
         }
     }
 
-    const callback=()=>{
+    const callback = () => {
         setServiceName("");
         setNote("");
     }
@@ -37,7 +37,7 @@ export const BankDetailsForm = (props) => {
                         name="serviceName"
                         id="serviceName"
                         value={serviceName}
-                        onChange={(e) => {setServiceName(e.target.value);setError("")}}
+                        onChange={(e) => { setServiceName(e.target.value); setError("") }}
                     />
                     {error?.serviceName && <div className='error-msg'>{error.serviceName}</div>}
                 </div>
@@ -50,9 +50,9 @@ export const BankDetailsForm = (props) => {
                         name="note"
                         id="note"
                         value={note}
-                        onChange={(e) => {setNote(e.target.value);setError("")}}
+                        onChange={(e) => { setNote(e.target.value); setError("") }}
                     />
-                      {error?.note && <div className='error-msg'>{error.note}</div>}
+                    {error?.note && <div className='error-msg'>{error.note}</div>}
                 </div>
             </div>
 
@@ -72,7 +72,7 @@ const rules = [{
     fieldName: 'Note',
     type: 'string',
     require: true
-},{
+}, {
     field: 'serviceName',
     fieldName: 'Service Name',
     type: 'string',

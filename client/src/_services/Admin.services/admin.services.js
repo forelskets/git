@@ -4,3 +4,9 @@ export const service = async (obj) => {
     console.log("res",res)
     return res
 }
+
+export const AllService = async (obj) => {
+    let res =await Api('GET', '/service', obj)
+    console.log("res",res)
+    return res
+}

@@ -1,1 +1,1 @@
-export {service} from './admin.services'
+export {service,AllService} from './admin.services'
