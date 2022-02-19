@@ -13,7 +13,7 @@ const AdminApplication = () => {
 
   const callEffect = async () => {
     let res = await Applications()
-    if (res.status === 1 && Array.isArray(res?.data?.applications)) {
+    if (res?.status === 1 && Array.isArray(res?.data?.applications)) {
       setData(res?.data?.applications);
     }
   };
