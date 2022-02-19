@@ -6,6 +6,10 @@ const User = require('./models/users');
 const cookieParser = require('cookie-parser');
 
 const ApplyLoanRouter = require('./routers/ApplyLoan');
+const serviceRouter = require('./routers/service');
+const bankRouter = require('./routers/bank');
+const bankOfferRouter = require('./routers/bankOffer');
+
 const cors = require('cors');
 
 app.use(cors());
@@ -14,6 +18,9 @@ app.use(express.json());
 require('./db/conn');
 app.use(router);
 app.use(ApplyLoanRouter);
+app.use('/service', serviceRouter);
+app.use('/bank', bankRouter);
+app.use('/bank-offer', bankOfferRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello server');
