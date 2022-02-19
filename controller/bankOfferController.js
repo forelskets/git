@@ -3,7 +3,7 @@ const BankOffer = require('../models/bankOffer');
 exports.getBankOfferList = async (req, res, next) => {
   console.log('getBankOfferList');
   try {
-    var result = await BankOffer.find();
+    var result = await BankOffer.find().populate(['BankName', 'BankService']);
     if (result && result.length > 0) {
       return res.send({
         status: 1,
@@ -30,7 +30,12 @@ exports.getBankOfferById = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const result = await BankOffer.findById(id);
+    const result = await BankOffer.findById(id).populate([
+      'BankName',
+      'BankService',
+    ]);
+    console.log('result', result);
+
     if (result) {
       return res.send({
         status: 1,
@@ -70,11 +75,15 @@ exports.createBankOffer = async (req, res, next) => {
     //   });
     // }
 
+    console.log('BankName', BankName);
+    console.log('Note', Note);
+
     const result = await BankOffer.create({
-      BankOfferName: BankOfferName,
+      BankName: BankName,
       BankService: BankService,
       Note: Note,
     });
+    console.log('result', result);
 
     if (result.id) {
       return res.send({

@@ -1,28 +1,35 @@
 const mongoose = require('mongoose');
 
-
-const planSchema = new mongoose.Schema({
-    Id:{
-        type: String,
-        // required: true
+const planSchema = new mongoose.Schema(
+  {
+    Id: {
+      type: String,
+      // required: true
     },
+    // BankName: {
+    //     type: String,
+    //     required: true,
+    // },
     BankName: {
-        type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'bank',
+    },
+    Note: {
+      type: String,
+      required: true,
+    },
+    BankService: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-    },
-    BankNote:{
-        type: String,
-        required: true
-    },
-    BankService:{
-        type:String,
-        required:true
-    }
-    
-        
-    },{timestamps: true}
-)
+        ref: 'service',
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-const Plan = new mongoose.model("bankOffer", planSchema);
+const Plan = new mongoose.model('bankOffer', planSchema);
 
 module.exports = Plan;
