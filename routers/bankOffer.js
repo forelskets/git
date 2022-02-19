@@ -5,7 +5,7 @@ const bankOfferController = require('../controller/bankOfferController');
 
 router.get('/:id', bankOfferController.getBankOfferById);
 router.get('/', bankOfferController.getBankOfferList);
-router.post('/:id', bankOfferController.createBankOffer);
+router.post('/', bankOfferController.createBankOffer);
 router.put('/:id', bankOfferController.updateBankOffer);
 router.delete('/:id', bankOfferController.deleteBankOffer);
 
