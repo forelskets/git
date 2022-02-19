@@ -1,13 +1,18 @@
-import {rules} from './Rules'
-export const Validate=(fields,rules)=>{
-
-let error={}
-Object.keys(fields).map(key=>{
-   // const rule 
-})
-Array.isArray(rules) && rules.map((obj)=>{
-     
-})
-
-return error
+import { rules } from './Rules'
+export const Validate = (fields, frule) => {
+    let error = {}
+    Object.keys(fields).map((key) => {
+        let rule = ""
+        Array.isArray(frule) && frule.map((obj) => {
+            if (key === obj.field) {
+                rule = obj
+            }
+        })
+        if (rule !== "") {
+            error = {
+                ...error, [key]: rules(fields[key], rule)
+            }
+        }
+    })
+    return error
 }
